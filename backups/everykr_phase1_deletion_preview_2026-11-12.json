@@ -1,0 +1,910 @@
+{
+  "generatedAt": "2026-11-12T11:27:27.217Z",
+  "totalProposedForDeletion": 113,
+  "records": [
+    {
+      "index": 1,
+      "id": "the-catholic-university-of-korea-main-campus",
+      "name": "The Catholic University of Korea (Main Campus)",
+      "koreanName": "가톨릭대학교",
+      "city": "Bucheon",
+      "type": "Private"
+    },
+    {
+      "index": 2,
+      "id": "kangnam-university",
+      "name": "Kangnam University",
+      "koreanName": "강남대학교",
+      "city": "Yongin",
+      "type": "Private"
+    },
+    {
+      "index": 3,
+      "id": "kangseo-university",
+      "name": "Kangseo University",
+      "koreanName": "강서대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 4,
+      "id": "konkuk-university",
+      "name": "Konkuk University",
+      "koreanName": "건국대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 5,
+      "id": "konkuk-university-glocal",
+      "name": "Konkuk University (Glocal)",
+      "koreanName": "건국대학교 글로컬캠퍼스",
+      "city": "Chungju",
+      "type": "Private"
+    },
+    {
+      "index": 6,
+      "id": "kyonggi-university-main-campus",
+      "name": "Kyonggi University (Main Campus)",
+      "koreanName": "경기대학교",
+      "city": "Suwon",
+      "type": "Private"
+    },
+    {
+      "index": 7,
+      "id": "kyungnam-university",
+      "name": "Kyungnam University",
+      "koreanName": "경남대학교",
+      "city": "Changwon",
+      "type": "Private"
+    },
+    {
+      "index": 8,
+      "id": "kyungdong-university-main-campus",
+      "name": "Kyungdong University (Main Campus)",
+      "koreanName": "경동대학교",
+      "city": "Goseong",
+      "type": "Private"
+    },
+    {
+      "index": 9,
+      "id": "kyungpook-national-university",
+      "name": "Kyungpook National University",
+      "koreanName": "경북대학교",
+      "city": "Daegu",
+      "type": "National"
+    },
+    {
+      "index": 10,
+      "id": "gyeongsang-national-university",
+      "name": "Gyeongsang National University",
+      "koreanName": "경상국립대학교",
+      "city": "Jinju",
+      "type": "National"
+    },
+    {
+      "index": 11,
+      "id": "kyungwoon-university",
+      "name": "Kyungwoon University",
+      "koreanName": "경운대학교",
+      "city": "Gumi",
+      "type": "Private"
+    },
+    {
+      "index": 12,
+      "id": "kyungil-university",
+      "name": "Kyungil University",
+      "koreanName": "경일대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 13,
+      "id": "kyung-hee-university",
+      "name": "Kyung Hee University",
+      "koreanName": "경희대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 14,
+      "id": "keimyung-university",
+      "name": "Keimyung University",
+      "koreanName": "계명대학교",
+      "city": "Daegu",
+      "type": "Private"
+    },
+    {
+      "index": 15,
+      "id": "korea-university",
+      "name": "Korea University",
+      "koreanName": "고려대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 16,
+      "id": "korea-university-sejong",
+      "name": "Korea University (Sejong)",
+      "koreanName": "고려대학교 세종캠퍼스",
+      "city": "Sejong",
+      "type": "Private"
+    },
+    {
+      "index": 17,
+      "id": "kosin-university",
+      "name": "Kosin University",
+      "koreanName": "고신대학교",
+      "city": "Busan",
+      "type": "Private"
+    },
+    {
+      "index": 18,
+      "id": "kwangwoon-university",
+      "name": "Kwangwoon University",
+      "koreanName": "광운대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 19,
+      "id": "gwangju-institute-of-science-and-technology",
+      "name": "Gwangju Institute of Science and Technology",
+      "koreanName": "광주과학기술원",
+      "city": "Gwangju",
+      "type": "National"
+    },
+    {
+      "index": 20,
+      "id": "gwangju-university",
+      "name": "Gwangju University",
+      "koreanName": "광주대학교",
+      "city": "Gwangju",
+      "type": "Private"
+    },
+    {
+      "index": 21,
+      "id": "gwangju-womans-university",
+      "name": "Gwangju Womans University",
+      "koreanName": "광주여자대학교",
+      "city": "Gwangju",
+      "type": "Private"
+    },
+    {
+      "index": 22,
+      "id": "kyungkuk-national-university",
+      "name": "Kyungkuk National University",
+      "koreanName": "국립경국대학교",
+      "city": "Andong",
+      "type": "National"
+    },
+    {
+      "index": 23,
+      "id": "gongju-national-university",
+      "name": "Gongju National University",
+      "koreanName": "국립공주대학교",
+      "city": "Gongju",
+      "type": "National"
+    },
+    {
+      "index": 24,
+      "id": "kunsan-national-university",
+      "name": "Kunsan National University",
+      "koreanName": "국립군산대학교",
+      "city": "Gunsan",
+      "type": "National"
+    },
+    {
+      "index": 25,
+      "id": "kumoh-national-institute-of-technology",
+      "name": "Kumoh National Institute of Technology",
+      "koreanName": "국립금오공과대학교",
+      "city": "Gumi",
+      "type": "National"
+    },
+    {
+      "index": 26,
+      "id": "mokpo-national-university",
+      "name": "Mokpo National University",
+      "koreanName": "국립목포대학교",
+      "city": "Muan (Mokpo Area)",
+      "type": "National"
+    },
+    {
+      "index": 27,
+      "id": "pukyong-national-university",
+      "name": "Pukyong National University",
+      "koreanName": "국립부경대학교",
+      "city": "Busan",
+      "type": "National"
+    },
+    {
+      "index": 28,
+      "id": "suncheon-national-university",
+      "name": "Suncheon National University",
+      "koreanName": "국립순천대학교",
+      "city": "Suncheon",
+      "type": "National"
+    },
+    {
+      "index": 29,
+      "id": "changwon-national-university",
+      "name": "Changwon National University",
+      "koreanName": "국립창원대학교",
+      "city": "Changwon",
+      "type": "National"
+    },
+    {
+      "index": 30,
+      "id": "korea-national-university-of-transportation",
+      "name": "Korea National University of Transportation",
+      "koreanName": "국립한국교통대학교",
+      "city": "Chungju",
+      "type": "National"
+    },
+    {
+      "index": 31,
+      "id": "korea-maritime-university",
+      "name": "Korea Maritime University",
+      "koreanName": "국립한국해양대학교",
+      "city": "Busan",
+      "type": "National"
+    },
+    {
+      "index": 32,
+      "id": "hanbat-national-university",
+      "name": "Hanbat National University",
+      "koreanName": "국립한밭대학교",
+      "city": "Daejeon",
+      "type": "National"
+    },
+    {
+      "index": 33,
+      "id": "kookmin-university",
+      "name": "Kookmin University",
+      "koreanName": "국민대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 34,
+      "id": "gimcheon-national-university",
+      "name": "Gimcheon National University",
+      "koreanName": "김천대학교",
+      "city": "Gimcheon",
+      "type": "Private"
+    },
+    {
+      "index": 35,
+      "id": "nazarene-university",
+      "name": "Nazarene University",
+      "koreanName": "나사렛대학교",
+      "city": "Cheonan",
+      "type": "Private"
+    },
+    {
+      "index": 36,
+      "id": "namseoul-national-university",
+      "name": "Namseoul National University",
+      "koreanName": "남서울대학교",
+      "city": "Cheonan",
+      "type": "Private"
+    },
+    {
+      "index": 37,
+      "id": "dankook-university-main-campus",
+      "name": "Dankook University (Main Campus)",
+      "koreanName": "단국대학교",
+      "city": "Yongin",
+      "type": "Private"
+    },
+    {
+      "index": 38,
+      "id": "daegu-catholic-university",
+      "name": "Daegu Catholic University",
+      "koreanName": "대구가톨릭대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 39,
+      "id": "daegu-university",
+      "name": "Daegu University",
+      "koreanName": "대구대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 40,
+      "id": "daegu-hani-university",
+      "name": "Daegu Hani University",
+      "koreanName": "대구한의대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 41,
+      "id": "daeshin-university",
+      "name": "Daeshin University",
+      "koreanName": "대신대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 42,
+      "id": "daejeon-university",
+      "name": "Daejeon University",
+      "koreanName": "대전대학교",
+      "city": "Daejeon",
+      "type": "Private"
+    },
+    {
+      "index": 43,
+      "id": "daejin-university",
+      "name": "Daejin University",
+      "koreanName": "대진대학교",
+      "city": "Pocheon",
+      "type": "Private"
+    },
+    {
+      "index": 44,
+      "id": "duksung-womens-university",
+      "name": "Duksung Women's University",
+      "koreanName": "덕성여자대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 45,
+      "id": "dongguk-university",
+      "name": "Dongguk University",
+      "koreanName": "동국대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 46,
+      "id": "dongguk-university-wise",
+      "name": "Dongguk University (WISE)",
+      "koreanName": "동국대학교 WISE캠퍼스",
+      "city": "Gyeongju",
+      "type": "Private"
+    },
+    {
+      "index": 47,
+      "id": "dongduk-womens-university",
+      "name": "Dongduk Women's University",
+      "koreanName": "동덕여자대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 48,
+      "id": "dongseo-university",
+      "name": "Dongseo University",
+      "koreanName": "동서대학교",
+      "city": "Busan",
+      "type": "Private"
+    },
+    {
+      "index": 49,
+      "id": "myongji-university-seoul-campus",
+      "name": "Myongji University (Seoul Campus)",
+      "koreanName": "명지대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 50,
+      "id": "mokwon-university",
+      "name": "Mokwon University",
+      "koreanName": "목원대학교",
+      "city": "Daejeon",
+      "type": "Private"
+    },
+    {
+      "index": 51,
+      "id": "pai-chai-university",
+      "name": "Pai Chai University",
+      "koreanName": "배재대학교",
+      "city": "Daejeon",
+      "type": "Private"
+    },
+    {
+      "index": 52,
+      "id": "baekseok-university",
+      "name": "Baekseok University",
+      "koreanName": "백석대학교",
+      "city": "Cheonan",
+      "type": "Private"
+    },
+    {
+      "index": 53,
+      "id": "pusan-national-university",
+      "name": "Pusan National University",
+      "koreanName": "부산대학교",
+      "city": "Busan",
+      "type": "National"
+    },
+    {
+      "index": 54,
+      "id": "busan-university-of-foreign-studies",
+      "name": "Busan University of Foreign Studies",
+      "koreanName": "부산외국어대학교",
+      "city": "Busan",
+      "type": "Private"
+    },
+    {
+      "index": 55,
+      "id": "sahmyook-university",
+      "name": "Sahmyook University",
+      "koreanName": "삼육대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 56,
+      "id": "sangmyung-university-main-campus",
+      "name": "Sangmyung University (Main Campus)",
+      "koreanName": "상명대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 57,
+      "id": "sogang-university",
+      "name": "Sogang University",
+      "koreanName": "서강대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 58,
+      "id": "seokyeong-university",
+      "name": "Seokyeong University",
+      "koreanName": "서경대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 59,
+      "id": "seoul-national-university-of-science-and-technology",
+      "name": "Seoul National University of Science and Technology",
+      "koreanName": "서울과학기술대학교",
+      "city": "Seoul",
+      "type": "National"
+    },
+    {
+      "index": 60,
+      "id": "seoul-christian-university",
+      "name": "Seoul Christian University",
+      "koreanName": "서울기독대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 61,
+      "id": "seoul-national-university",
+      "name": "Seoul National University",
+      "koreanName": "서울대학교",
+      "city": "Seoul",
+      "type": "National"
+    },
+    {
+      "index": 62,
+      "id": "university-of-seoul",
+      "name": "University of Seoul",
+      "koreanName": "서울시립대학교",
+      "city": "Seoul",
+      "type": "Public"
+    },
+    {
+      "index": 63,
+      "id": "seoul-theological-university",
+      "name": "Seoul Theological University",
+      "koreanName": "서울신학대학교",
+      "city": "Bucheon",
+      "type": "Private"
+    },
+    {
+      "index": 64,
+      "id": "seoul-womens-university",
+      "name": "Seoul Women's University",
+      "koreanName": "서울여자대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 65,
+      "id": "sun-moon-university",
+      "name": "Sun Moon University",
+      "koreanName": "선문대학교",
+      "city": "Asan",
+      "type": "Private"
+    },
+    {
+      "index": 66,
+      "id": "sungkyul-university",
+      "name": "Sungkyul University",
+      "koreanName": "성결대학교",
+      "city": "Anyang",
+      "type": "Private"
+    },
+    {
+      "index": 67,
+      "id": "sungkonghoe-university",
+      "name": "Sungkonghoe University",
+      "koreanName": "성공회대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 68,
+      "id": "sungkyunkwan-university",
+      "name": "Sungkyunkwan University",
+      "koreanName": "성균관대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 69,
+      "id": "semyung-university",
+      "name": "Semyung University",
+      "koreanName": "세명대학교",
+      "city": "Jecheon",
+      "type": "Private"
+    },
+    {
+      "index": 70,
+      "id": "soonchunhyang-university",
+      "name": "Soonchunhyang University",
+      "koreanName": "순천향대학교",
+      "city": "Asan",
+      "type": "Private"
+    },
+    {
+      "index": 71,
+      "id": "soongsil-university",
+      "name": "Soongsil University",
+      "koreanName": "숭실대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 72,
+      "id": "shinhan-university-main-campus",
+      "name": "Shinhan University (Main Campus)",
+      "koreanName": "신한대학교",
+      "city": "Uijeongbu",
+      "type": "Private"
+    },
+    {
+      "index": 73,
+      "id": "ajou-university",
+      "name": "Ajou University",
+      "koreanName": "아주대학교",
+      "city": "Suwon",
+      "type": "Private"
+    },
+    {
+      "index": 74,
+      "id": "anyang-university-main-campus",
+      "name": "Anyang University (Main Campus)",
+      "koreanName": "안양대학교",
+      "city": "Anyang",
+      "type": "Private"
+    },
+    {
+      "index": 75,
+      "id": "yonsei-university",
+      "name": "Yonsei University",
+      "koreanName": "연세대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 76,
+      "id": "yonsei-university-mirae",
+      "name": "Yonsei University (Mirae)",
+      "koreanName": "연세대학교 미래캠퍼스",
+      "city": "Wonju",
+      "type": "Private"
+    },
+    {
+      "index": 77,
+      "id": "yeungnam-university",
+      "name": "Yeungnam University",
+      "koreanName": "영남대학교",
+      "city": "Gyeongsan",
+      "type": "Private"
+    },
+    {
+      "index": 78,
+      "id": "woosuk-university",
+      "name": "Woosuk University",
+      "koreanName": "우석대학교",
+      "city": "Wanju (Jeonju Area)",
+      "type": "Private"
+    },
+    {
+      "index": 79,
+      "id": "ulsan-national-institute-of-science-and-technology",
+      "name": "Ulsan National Institute of Science and Technology",
+      "koreanName": "울산과학기술원",
+      "city": "Ulsan",
+      "type": "National"
+    },
+    {
+      "index": 80,
+      "id": "ulsan-university-main-campus",
+      "name": "Ulsan University (Main Campus)",
+      "koreanName": "울산대학교",
+      "city": "Ulsan",
+      "type": "Private"
+    },
+    {
+      "index": 81,
+      "id": "wonkwang-university",
+      "name": "Wonkwang University",
+      "koreanName": "원광대학교",
+      "city": "Iksan",
+      "type": "Private"
+    },
+    {
+      "index": 82,
+      "id": "wideok-university",
+      "name": "Wideok University",
+      "koreanName": "위덕대학교",
+      "city": "Gyeongju",
+      "type": "Private"
+    },
+    {
+      "index": 83,
+      "id": "eulji-university-main-campus",
+      "name": "Eulji University (Main Campus)",
+      "koreanName": "을지대학교",
+      "city": "Seongnam",
+      "type": "Private"
+    },
+    {
+      "index": 84,
+      "id": "ewha-womans-university",
+      "name": "Ewha Womans University",
+      "koreanName": "이화여자대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 85,
+      "id": "incheon-national-university",
+      "name": "Incheon National University",
+      "koreanName": "인천대학교",
+      "city": "Incheon",
+      "type": "National"
+    },
+    {
+      "index": 86,
+      "id": "inha-university",
+      "name": "Inha University",
+      "koreanName": "인하대학교",
+      "city": "Incheon",
+      "type": "Private"
+    },
+    {
+      "index": 87,
+      "id": "chonnam-national-university",
+      "name": "Chonnam National University",
+      "koreanName": "전남대학교",
+      "city": "Gwangju",
+      "type": "National"
+    },
+    {
+      "index": 88,
+      "id": "jeonju-university",
+      "name": "Jeonju University",
+      "koreanName": "전주대학교",
+      "city": "Jeonju",
+      "type": "Private"
+    },
+    {
+      "index": 89,
+      "id": "jeju-national-university",
+      "name": "Jeju National University",
+      "koreanName": "제주대학교",
+      "city": "Jeju",
+      "type": "National"
+    },
+    {
+      "index": 90,
+      "id": "chosun-university",
+      "name": "Chosun University",
+      "koreanName": "조선대학교",
+      "city": "Gwangju",
+      "type": "Private"
+    },
+    {
+      "index": 91,
+      "id": "joongbu-university",
+      "name": "Joongbu University",
+      "koreanName": "중부대학교",
+      "city": "Geumsan",
+      "type": "Private"
+    },
+    {
+      "index": 92,
+      "id": "chung-ang-university-main-campus",
+      "name": "Chung-Ang University (Main Campus)",
+      "koreanName": "중앙대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 93,
+      "id": "joongwon-university",
+      "name": "Joongwon University",
+      "koreanName": "중원대학교",
+      "city": "Goesan",
+      "type": "Private"
+    },
+    {
+      "index": 94,
+      "id": "cha-university",
+      "name": "CHA University",
+      "koreanName": "차의과학대학교",
+      "city": "Pocheon",
+      "type": "Private"
+    },
+    {
+      "index": 95,
+      "id": "changshin-university",
+      "name": "Changshin University",
+      "koreanName": "창신대학교",
+      "city": "Changwon",
+      "type": "Private"
+    },
+    {
+      "index": 96,
+      "id": "cheongju-university",
+      "name": "Cheongju University",
+      "koreanName": "청주대학교",
+      "city": "Cheongju",
+      "type": "Private"
+    },
+    {
+      "index": 97,
+      "id": "chungnam-national-university",
+      "name": "Chungnam National University",
+      "koreanName": "충남대학교",
+      "city": "Daejeon",
+      "type": "National"
+    },
+    {
+      "index": 98,
+      "id": "pyeongtaek-university",
+      "name": "Pyeongtaek University",
+      "koreanName": "평택대학교",
+      "city": "Pyeongtaek",
+      "type": "Private"
+    },
+    {
+      "index": 99,
+      "id": "pohang-university-of-science-and-technology",
+      "name": "Pohang University of Science and Technology",
+      "koreanName": "포항공과대학교",
+      "city": "Pohang",
+      "type": "Private"
+    },
+    {
+      "index": 100,
+      "id": "kaist",
+      "name": "KAIST",
+      "koreanName": "한국과학기술원",
+      "city": "Daejeon",
+      "type": "National"
+    },
+    {
+      "index": 101,
+      "id": "korea-advanced-institute-of-science-and-technology",
+      "name": "Korea Advanced Institute of Science and Technology",
+      "koreanName": "한국과학기술원",
+      "city": "Daejeon",
+      "type": "National"
+    },
+    {
+      "index": 102,
+      "id": "korea-national-university-of-education",
+      "name": "Korea National University of Education",
+      "koreanName": "한국교원대학교",
+      "city": "Cheongju",
+      "type": "National"
+    },
+    {
+      "index": 103,
+      "id": "korea-university-of-technology-and-education",
+      "name": "Korea University of Technology and Education",
+      "koreanName": "한국기술교육대학교",
+      "city": "Cheonan",
+      "type": "Public"
+    },
+    {
+      "index": 104,
+      "id": "korea-bible-university",
+      "name": "Korea Bible University",
+      "koreanName": "한국성서대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 105,
+      "id": "hankuk-university-of-foreign-studies",
+      "name": "Hankuk University of Foreign Studies",
+      "koreanName": "한국외국어대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 106,
+      "id": "korea-aerospace-university",
+      "name": "Korea Aerospace University",
+      "koreanName": "한국항공대학교",
+      "city": "Goyang",
+      "type": "Private"
+    },
+    {
+      "index": 107,
+      "id": "hannam-university",
+      "name": "Hannam University",
+      "koreanName": "한남대학교",
+      "city": "Daejeon",
+      "type": "Private"
+    },
+    {
+      "index": 108,
+      "id": "handong-university",
+      "name": "Handong University",
+      "koreanName": "한동대학교",
+      "city": "Pohang",
+      "type": "Private"
+    },
+    {
+      "index": 109,
+      "id": "hallym-university",
+      "name": "Hallym University",
+      "koreanName": "한림대학교",
+      "city": "Chuncheon",
+      "type": "Private"
+    },
+    {
+      "index": 110,
+      "id": "hansung-university-main-campus",
+      "name": "Hansung University (Main Campus)",
+      "koreanName": "한성대학교",
+      "city": "Seoul",
+      "type": "Private"
+    },
+    {
+      "index": 111,
+      "id": "hansei-university",
+      "name": "Hansei University",
+      "koreanName": "한세대학교",
+      "city": "Gunpo",
+      "type": "Private"
+    },
+    {
+      "index": 112,
+      "id": "hoseo-university",
+      "name": "Hoseo University",
+      "koreanName": "호서대학교",
+      "city": "Asan",
+      "type": "Private"
+    },
+    {
+      "index": 113,
+      "id": "hongik-university-main-campus",
+      "name": "Hongik University (Main Campus)",
+      "koreanName": "홍익대학교",
+      "city": "Seoul",
+      "type": "Private"
+    }
+  ]
+}

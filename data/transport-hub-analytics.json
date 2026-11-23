@@ -1,0 +1,59 @@
+{
+  "ktx": {
+    "totalSearches": 1,
+    "totalApiRequests": 0,
+    "successfulApiRequests": 0,
+    "failedApiRequests": 0,
+    "lastResponseTimeMs": null,
+    "averageResponseTimeMs": null,
+    "routeCounts": {
+      "Seoul Station → Busan Station": 1
+    },
+    "recentSearches": [
+      {
+        "id": "ktx_1795269321876_s1j8i",
+        "timestamp": "2026-11-21T13:55:21.876Z",
+        "mode": "ktx",
+        "originName": "Seoul Station",
+        "destinationName": "Busan Station",
+        "travelDate": "2026-12-15",
+        "preferredDepartureTime": "09:00",
+        "passengers": 2,
+        "resultsCount": 0,
+        "status": "external_access_required"
+      }
+    ]
+  },
+  "bus": {
+    "totalSearches": 1,
+    "totalApiRequests": 0,
+    "successfulApiRequests": 0,
+    "failedApiRequests": 0,
+    "lastResponseTimeMs": null,
+    "averageResponseTimeMs": null,
+    "routeCounts": {
+      "Seoul Express Bus Terminal (Gyeongbu) → Busan Central Bus Terminal (Nopo)": 1
+    },
+    "recentSearches": [
+      {
+        "id": "bus_1795269321904_48ynx",
+        "timestamp": "2026-11-21T13:55:21.904Z",
+        "mode": "bus",
+        "originName": "Seoul Express Bus Terminal (Gyeongbu)",
+        "destinationName": "Busan Central Bus Terminal (Nopo)",
+        "travelDate": "2026-12-15",
+        "preferredDepartureTime": "10:00",
+        "passengers": 2,
+        "resultsCount": 0,
+        "status": "external_access_required"
+      }
+    ]
+  },
+  "lastTagoHealthCheck": {
+    "checkedAt": null,
+    "connected": false,
+    "statusCode": "NOT_TESTED",
+    "responseTimeMs": null,
+    "message": "Connectivity test has not been executed yet."
+  }
+}

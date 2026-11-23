@@ -1,0 +1,1545 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Default-Deny Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Verified Firebase Auth custom claims or server-managed admins/{uid} registry ONLY
+    // (no hardcoded email fallbacks).
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.get('admin', false) == true ||
+        request.auth.token.get('role', '') == 'admin' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // Smart Application RBAC Helpers (verified Firebase Auth custom claims + admins/{uid} registry)
+    function isSmartAppAdmin() {
+      return isAdmin();
+    }
+
+    function isSmartAppCounsellor() {
+      return isSignedIn() && (
+        request.auth.token.get('counsellor', false) == true ||
+        request.auth.token.get('role', '') == 'counsellor'
+      );
+    }
+
+    function isSmartAppViewer() {
+      return isSignedIn() && (
+        request.auth.token.get('viewer', false) == true ||
+        request.auth.token.get('role', '') == 'viewer'
+      );
+    }
+
+    function isValidSmartApplicationStatus(status) {
+      return status in [
+        'draft',
+        'submitted',
+        'under_review',
+        'documents_missing',
+        'sent_to_university',
+        'interview',
+        'admitted',
+        'rejected',
+        'visa_processing',
+        'completed',
+        'withdrawn'
+      ];
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-@\\.]+$');
+    }
+
+    function isBoundedString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isValidEmail(val) {
+      return val is string && val.size() >= 5 && val.size() <= 254 && val.matches('^[^\\s@<>]+@[^\\s@<>]+\\.[^\\s@<>]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Never allow passwords, authentication tokens, or plaintext OTP codes in Firestore
+    function hasNoSensitiveCredentials() {
+      return !incoming().keys().hasAny([
+        'password',
+        'passwordHash',
+        'otp',
+        'otpCode',
+        'otpHash',
+        'plaintextOtp',
+        'accessToken',
+        'idToken',
+        'refreshToken',
+        'secret'
+      ]);
+    }
+
+    // 0. Protected Administrators Registry (Console & Server Provisioned)
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow list: if isAdmin();
+      allow write: if false; // Immutable from client SDKs; managed via secure console
+    }
+
+    // 1. Centralized Users Collection (Strict Per-UID Isolation & Self-Promotion Prevention)
+    match /users/{userId} {
+      // Users can ONLY read their own profile document; only authorized admins can list or read all users
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+
+      // Users can create their own profile document, but can NEVER make themselves an admin, spoof active agent approval, or store sensitive secrets
+      allow create: if isValidId(userId)
+        && hasNoSensitiveCredentials()
+        && (
+          isAdmin() || (
+            isOwner(userId)
+            && (incoming().uid == userId || incoming().id == userId)
+            && incoming().role in ['student', 'general', 'agent', 'employer', 'landlord', 'university']
+            && (
+              incoming().role != 'agent' ||
+              !('accountStatus' in incoming()) ||
+              incoming().accountStatus in ['pending_approval', 'unverified']
+            )
+            && (
+              !('agentPartnerProfile' in incoming()) ||
+              !('approvalStatus' in incoming().agentPartnerProfile) ||
+              incoming().agentPartnerProfile.approvalStatus == 'pending_approval'
+            )
+          )
+        );
+
+      // Users can only update their own permitted profile fields (never role, uid, id, emailVerified, accountStatus, registrationId, createdAt, or agent approvalStatus); admins can manage users
+      allow update: if isValidId(userId)
+        && hasNoSensitiveCredentials()
+        && (
+          isAdmin() || (
+            isOwner(userId)
+            && incoming().role != 'admin'
+            && (!('role' in existing()) || incoming().role == existing().role)
+            && (!('uid' in existing()) || incoming().uid == existing().uid)
+            && (!('id' in existing()) || incoming().id == existing().id)
+            && (!('emailVerified' in existing()) || incoming().emailVerified == existing().emailVerified)
+            && (!('accountStatus' in existing()) || incoming().accountStatus == existing().accountStatus)
+            && (!('registrationId' in existing()) || incoming().registrationId == existing().registrationId)
+            && (!('createdAt' in existing()) || incoming().createdAt == existing().createdAt)
+            && (
+              !('agentPartnerProfile' in incoming()) ||
+              !('approvalStatus' in incoming().agentPartnerProfile) ||
+              ('agentPartnerProfile' in existing() && incoming().agentPartnerProfile.approvalStatus == existing().agentPartnerProfile.approvalStatus) ||
+              incoming().agentPartnerProfile.approvalStatus == 'pending_approval'
+            )
+          )
+        );
+
+      allow delete: if isOwner(userId) || isAdmin();
+
+      // Sub-collections under User (Strictly isolated to owner / admin)
+      match /saved_items/{savedItemId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
+
+      match /notifications/{notificationId} {
+        allow read, update, delete: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) || isSmartAppAdmin() || isSmartAppCounsellor();
+      }
+
+      match /reminders/{reminderId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
+
+      match /private_sensitive/{docId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow write: if isOwner(userId) || isAdmin();
+      }
+    }
+
+    // Connection health check document
+    match /_connection_test/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 2. Login Logs Collection (uid, login timestamp, provider, success/failure)
+    match /login_logs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isValidId(logId)
+        && hasNoSensitiveCredentials()
+        && incoming().provider in ['google', 'email_otp', 'password']
+        && incoming().status in ['success', 'failure']
+        && incoming().success is bool
+        && (
+          isAdmin() ||
+          (isSignedIn() && incoming().uid == request.auth.uid) ||
+          (incoming().status == 'failure' && incoming().success == false)
+        );
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    // 2b. Registration Logs Collection
+    match /registration_logs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isValidId(logId)
+        && hasNoSensitiveCredentials()
+        && (isAdmin() || (isSignedIn() && incoming().uid == request.auth.uid));
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    // 3. Admin Logs & Admin Activity Logs Collections (admin UID, action, timestamp)
+    match /admin_logs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin()
+        && isValidId(logId)
+        && hasNoSensitiveCredentials()
+        && incoming().adminUid == request.auth.uid
+        && incoming().action is string;
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    match /admin_activity_logs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin()
+        && isValidId(logId)
+        && hasNoSensitiveCredentials()
+        && incoming().adminUid == request.auth.uid
+        && incoming().action is string;
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    // 4. OTP Verifications Metadata Collection (Strictly restricted to server/admin operations; never stores plaintext OTP codes)
+    match /otp_verifications/{verificationId} {
+      allow get, list: if isAdmin();
+      allow create, update: if isAdmin()
+        && isValidId(verificationId)
+        && hasNoSensitiveCredentials()
+        && incoming().email is string
+        && incoming().status in ['pending_otp', 'verified', 'expired', 'locked']
+        && incoming().emailVerified is bool;
+      allow delete: if isAdmin();
+    }
+
+    // 4b. Data Privacy & Account Deletion Requests Collection (GDPR / Korean PIPA Compliance)
+    match /data_privacy_requests/{requestId} {
+      allow get, list: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow create: if isValidId(requestId)
+        && hasNoSensitiveCredentials()
+        && isSignedIn()
+        && incoming().uid == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 5. Approved 25-University Relational Collections (Public Read, Hardened Admin Write)
+    function isValidRelationalChildPayload() {
+      return hasNoSensitiveCredentials()
+        && incoming().universityId is string
+        && incoming().universityId.size() >= 2
+        && incoming().universityId.size() <= 128;
+    }
+
+    match /universities/{universityId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(universityId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin() && isValidId(universityId);
+    }
+
+    match /university_campuses/{campusId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(campusId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(campusId);
+    }
+
+    match /university_logos/{logoId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(logoId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(logoId);
+    }
+
+    match /university_images/{imageId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(imageId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(imageId);
+    }
+
+    match /university_programs/{programId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(programId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(programId);
+    }
+
+    match /admission_requirements/{requirementId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(requirementId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(requirementId);
+    }
+
+    match /language_requirements/{langReqId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(langReqId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(langReqId);
+    }
+
+    match /tuition_fees/{tuitionId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(tuitionId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(tuitionId);
+    }
+
+    match /scholarships/{scholarshipId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(scholarshipId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(scholarshipId);
+    }
+
+    match /admission_deadlines/{deadlineId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(deadlineId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(deadlineId);
+    }
+
+    match /application_documents/{docItemId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(docItemId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(docItemId);
+    }
+
+    match /international_student_services/{serviceId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(serviceId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(serviceId);
+    }
+
+    match /university_contacts/{contactId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(contactId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(contactId);
+    }
+
+    match /university_sources/{sourceId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(sourceId) && isValidRelationalChildPayload();
+      allow delete: if isAdmin() && isValidId(sourceId);
+    }
+
+    match /university_verification_logs/{vlogId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidId(vlogId) && isValidRelationalChildPayload();
+      allow update, delete: if false; // Immutable verification audit trail
+    }
+
+    // 6. Jobs & Careers Collection
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow create: if isSignedIn() && (request.resource.data.employerId == request.auth.uid || isAdmin());
+      allow update: if isSignedIn() && (resource.data.employerId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && (resource.data.employerId == request.auth.uid || isAdmin());
+    }
+
+    // 7. Job Applications Collection
+    match /job_applications/{applicationId} {
+      allow read: if isSignedIn() && (
+        resource.data.applicantId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isSignedIn() && (request.resource.data.applicantId == request.auth.uid || isAdmin());
+      allow update: if isSignedIn() && (
+        resource.data.applicantId == request.auth.uid ||
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 8. Accommodations Collection (Strict Admin Approval & Public Visibility Gate)
+    match /accommodations/{accommodationId} {
+      // Only Approved + Available listings are readable publicly; Pending/Rejected/Unavailable/Archived are restricted to Admins or creator
+      allow get, list: if (
+        resource.data.approvalStatus == 'Approved' &&
+        resource.data.availability == 'Available'
+      ) || isAdmin() || (
+        isSignedIn() &&
+        (resource.data.createdBy == request.auth.uid || resource.data.landlordId == request.auth.uid)
+      );
+
+      // Newly created listings must default to Pending
+      allow create: if isValidId(accommodationId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn() &&
+        (isAdmin() || request.resource.data.createdBy == request.auth.uid || request.resource.data.landlordId == request.auth.uid) &&
+        request.resource.data.approvalStatus == 'Pending' &&
+        request.resource.data.availability in ['Available', 'Unavailable'] &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() >= 2 &&
+        request.resource.data.title.size() <= 200;
+
+      // Only authorized admins can set approvalStatus to Approved, Rejected, Unavailable, or Archived.
+      // If a non-admin creator edits their listing, approvalStatus must reset to Pending for re-approval.
+      allow update: if isValidId(accommodationId) &&
+        hasNoSensitiveCredentials() && (
+          isAdmin() || (
+            isSignedIn() &&
+            (resource.data.createdBy == request.auth.uid || resource.data.landlordId == request.auth.uid) &&
+            request.resource.data.approvalStatus == 'Pending' &&
+            request.resource.data.createdBy == resource.data.createdBy
+          )
+        );
+
+      allow delete: if isAdmin();
+    }
+
+    // 8b. Accommodation Inquiries Collection
+    match /accommodation_inquiries/{inquiryId} {
+      allow get, list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(inquiryId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn() &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.propertyId is string &&
+        request.resource.data.message is string &&
+        request.resource.data.message.size() >= 2 &&
+        request.resource.data.message.size() <= 2000;
+      allow update, delete: if isAdmin();
+    }
+
+    // 9. Community Posts, Genuine UID-Keyed Likes & Comments
+    match /community_posts/{postId} {
+      allow read: if true;
+      allow create: if isSignedIn() && (request.resource.data.authorId == request.auth.uid || isAdmin());
+      allow update: if isSignedIn() && (
+        resource.data.authorId == request.auth.uid ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likesCount', 'likedByUids', 'updatedAt']) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['repliesCount', 'updatedAt']) ||
+        isAdmin()
+      );
+      allow delete: if isSignedIn() && (resource.data.authorId == request.auth.uid || isAdmin());
+
+      // Genuine per-UID Likes subcollection: Document ID MUST equal authenticated user's UID (or Admin for fraud removal)
+      match /likes/{userId} {
+        allow read: if true;
+        allow create, update: if isSignedIn() &&
+          (request.auth.uid == userId || isAdmin()) &&
+          incoming().userId == userId;
+        allow delete: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      }
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn() && (request.resource.data.authorId == request.auth.uid || isAdmin());
+        allow update: if isSignedIn() && (
+          resource.data.authorId == request.auth.uid ||
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likesCount', 'likedByUids']) ||
+          isAdmin()
+        );
+        allow delete: if isSignedIn() && (resource.data.authorId == request.auth.uid || isAdmin());
+      }
+    }
+
+    // 9b. Community User Posting/Commenting Restrictions (Admin Moderation Only)
+    match /community_user_restrictions/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin() && isValidId(userId) && hasNoSensitiveCredentials();
+    }
+
+    // 10. Student Marketplace
+    match /marketplace_listings/{listingId} {
+      allow read: if true;
+      allow create: if isSignedIn() && (request.resource.data.sellerId == request.auth.uid || isAdmin());
+      allow update, delete: if isSignedIn() && (resource.data.sellerId == request.auth.uid || isAdmin());
+    }
+
+    // 11. Daily Life Articles & Guides (Public Read, Admin Write)
+    match /articles/{articleId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 12. Safety & Incident Reports
+    match /reports/{reportId} {
+      allow create: if isSignedIn() && request.resource.data.reporterId == request.auth.uid;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // 13. Audit Logs Collection
+    match /audit_logs/{logId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    // 14. Newsletter Subscribers Collection (Privacy Protected)
+    match /newsletter_subscribers/{subscriberId} {
+      // Only administrators can list/read subscriber records; visitors can create/update their own subscription state via valid email payload
+      allow read, delete: if isAdmin();
+      allow create, update: if isValidId(subscriberId)
+        && request.resource.data.email is string
+        && request.resource.data.email.size() >= 5
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.status in ['pending_verification', 'active', 'unsubscribed', 'bounced', 'suppressed'];
+    }
+
+    // 15. Newsletter Campaigns Collection (Admin Only)
+    match /newsletter_campaigns/{campaignId} {
+      allow read, write: if isAdmin();
+    }
+
+    // 16. EveryKR Korean Learning Academy Collections
+    match /academy_lessons/{lessonId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /academy_vocabulary/{vocabId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /academy_questions/{questionId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /academy_categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /academy_scenarios/{scenarioId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /academy_progress/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create, update: if (isOwner(userId) || isAdmin())
+        && isValidId(userId)
+        && hasNoSensitiveCredentials()
+        && incoming().userId == userId;
+      allow delete: if isAdmin();
+    }
+
+    match /academy_exam_results/{resultId} {
+      allow get, list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(resultId)
+        && hasNoSensitiveCredentials()
+        && isSignedIn()
+        && incoming().userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /academy_question_history/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create, update: if (isOwner(userId) || isAdmin())
+        && isValidId(userId)
+        && hasNoSensitiveCredentials()
+        && incoming().userId == userId;
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /academy_recommendations/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create, update: if (isOwner(userId) || isAdmin())
+        && isValidId(userId)
+        && hasNoSensitiveCredentials()
+        && incoming().userId == userId;
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // 17. Unified EVERYKR AI Platform Collections (Strict Per-Owner Isolation & Admin Audit)
+    function isAiRecordOwner() {
+      return isSignedIn() && (
+        resource.data.ownerId == request.auth.uid ||
+        resource.data.userId == request.auth.uid
+      );
+    }
+
+    function isCreatingOwnAiRecord() {
+      return isSignedIn()
+        && hasNoSensitiveCredentials()
+        && (
+          incoming().ownerId == request.auth.uid ||
+          incoming().userId == request.auth.uid
+        );
+    }
+
+    match /conversations/{conversationId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(conversationId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update: if isValidId(conversationId) && (isAdmin() || (isAiRecordOwner() && isCreatingOwnAiRecord()));
+      allow delete: if isAdmin() || isAiRecordOwner();
+
+      match /messages/{messageId} {
+        allow read, write: if isAdmin() || (
+          isSignedIn() && get(/databases/$(database)/documents/conversations/$(conversationId)).data.ownerId == request.auth.uid
+        );
+      }
+    }
+
+    match /messages/{messageId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(messageId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update, delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /projects/{projectId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(projectId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update: if isValidId(projectId) && (isAdmin() || (isAiRecordOwner() && isCreatingOwnAiRecord()));
+      allow delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /tasks/{taskId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(taskId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update: if isValidId(taskId) && (isAdmin() || (isAiRecordOwner() && isCreatingOwnAiRecord()));
+      allow delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /files/{fileId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(fileId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update, delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /generated_documents/{docId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(docId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update, delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /execution_jobs/{jobId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(jobId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update, delete: if isAdmin() || isAiRecordOwner();
+    }
+
+    match /execution_logs/{logId} {
+      allow get, list: if isAdmin() || isAiRecordOwner();
+      allow create: if isValidId(logId) && (isAdmin() || isCreatingOwnAiRecord());
+      allow update, delete: if isAdmin();
+    }
+
+    match /user_preferences/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create, update: if isValidId(userId) && hasNoSensitiveCredentials() && (isOwner(userId) || isAdmin());
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // 18. SIM Registration & Free SIM Application System (Strict Privacy & Document Protection)
+    match /sim_applications/{applicationId} {
+      // Only the authenticated applicant and authorized administrators can access application data
+      allow get, list: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+
+      // Authenticated users can submit their own SIM application with mandatory consentAccepted == true and Pending initial status
+      allow create: if isValidId(applicationId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn() &&
+        (isAdmin() || request.resource.data.userId == request.auth.uid) &&
+        request.resource.data.applicationId == applicationId &&
+        request.resource.data.consentAccepted == true &&
+        request.resource.data.consentVersion is string &&
+        request.resource.data.consentTimestamp is string &&
+        request.resource.data.submissionTimestamp is string &&
+        request.resource.data.applicationStatus in ['Pending', 'Submitted'] &&
+        request.resource.data.fullName is string &&
+        request.resource.data.fullName.size() >= 2 &&
+        request.resource.data.fullName.size() <= 150 &&
+        request.resource.data.universityName is string &&
+        request.resource.data.universityName.size() >= 2 &&
+        request.resource.data.universityName.size() <= 200 &&
+        request.resource.data.whatsappNumber is string &&
+        request.resource.data.whatsappNumber.size() >= 6 &&
+        request.resource.data.whatsappNumber.size() <= 40 &&
+        request.resource.data.arrivalDate is string &&
+        request.resource.data.arrivalDate.size() >= 6 &&
+        request.resource.data.arrivalDate.size() <= 30 &&
+        request.resource.data.arrivalTime is string &&
+        request.resource.data.arrivalTime.size() >= 3 &&
+        request.resource.data.arrivalTime.size() <= 20 &&
+        request.resource.data.flightNumber is string &&
+        request.resource.data.flightNumber.size() >= 2 &&
+        request.resource.data.flightNumber.size() <= 40 &&
+        request.resource.data.arrivalAirport in [
+          'Incheon International Airport (ICN)',
+          'Gimhae International Airport (PUS)',
+          'Gimpo International Airport (GMP)',
+          'Jeju International Airport (CJU)',
+          'Daegu International Airport (TAE)',
+          'Cheongju International Airport (CJJ)',
+          'Other'
+        ] &&
+        request.resource.data.passportDocumentURL is string &&
+        request.resource.data.flightTicketDocumentURL is string;
+
+      // Only authorized administrators can update applicationStatus (Submitted, Pending, Under Review, Contacted, SIM Arranged, Completed, Rejected) or delete records
+      allow update: if isValidId(applicationId) &&
+        hasNoSensitiveCredentials() &&
+        isAdmin() &&
+        request.resource.data.applicationStatus in [
+          'Submitted',
+          'Pending',
+          'Under Review',
+          'Contacted',
+          'SIM Arranged',
+          'Completed',
+          'Rejected'
+        ];
+
+      allow delete: if isAdmin();
+    }
+
+    // 19. Student Portal Documents Collection (Strict Per-Student Isolation & Admin Verification)
+    match /student_documents/{documentId} {
+      allow get, list: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow create: if isValidId(documentId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn() && (
+          isAdmin() || (
+            request.resource.data.userId == request.auth.uid &&
+            request.resource.data.verificationStatus == 'Pending Verification' &&
+            request.resource.data.category in [
+              'Passport',
+              'Academic Certificates',
+              'Academic Transcripts',
+              'English Proficiency Certificate',
+              'TOPIK Certificate',
+              'Other Supporting Documents'
+            ]
+          )
+        );
+
+      allow update: if isValidId(documentId) &&
+        hasNoSensitiveCredentials() && (
+          isAdmin() || (
+            isSignedIn() &&
+            resource.data.userId == request.auth.uid &&
+            request.resource.data.userId == resource.data.userId &&
+            request.resource.data.verificationStatus == 'Pending Verification'
+          )
+        );
+
+      allow delete: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+    }
+
+    // 20. University Applications Collection (Strict Student Ownership & Admin-Controlled Statuses)
+    match /university_applications/{applicationId} {
+      allow get, list: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow create: if isValidId(applicationId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn() && (
+          isAdmin() || (
+            request.resource.data.userId == request.auth.uid &&
+            request.resource.data.status in ['Draft', 'Submitted']
+          )
+        );
+
+      // Students can only update Drafts, submit Drafts, update requested documents, or Withdraw; they can NEVER set Accepted/Rejected/Under Review/Processing/Completed
+      allow update: if isValidId(applicationId) &&
+        hasNoSensitiveCredentials() && (
+          isAdmin() || (
+            isSignedIn() &&
+            resource.data.userId == request.auth.uid &&
+            request.resource.data.userId == resource.data.userId &&
+            request.resource.data.status in ['Draft', 'Submitted', 'Withdrawn']
+          )
+        );
+
+      allow delete: if isAdmin() || (
+        isSignedIn() &&
+        resource.data.userId == request.auth.uid &&
+        resource.data.status == 'Draft'
+      );
+    }
+
+    // 21. Staff & Role-Based Access Control Collection
+    match /staff_members/{staffId} {
+      allow get, list: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow create, update: if isAdmin() && isValidId(staffId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    // 22. Admin Platform Notifications Collection
+    match /admin_notifications/{notificationId} {
+      allow get, list, update, delete: if isAdmin();
+      allow create: if isValidId(notificationId) &&
+        hasNoSensitiveCredentials() &&
+        isSignedIn();
+    }
+
+    // 23. CMS Website Announcements Collection
+    match /cms_announcements/{announcementId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(announcementId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    // 24. EveryKR Essential Hub Public Reference Collections (Public Read, Hardened Admin Write)
+    match /essential_emergency_contacts/{contactId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(contactId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /essential_immigration_offices/{officeId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(officeId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /essential_police_stations/{stationId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(stationId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /essential_life_guides/{guideId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(guideId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /essential_airport_routes/{routeId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(routeId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /essential_news_updates/{newsId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(newsId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    // 25. Master Homepage CMS & Nested Services Collections (Public Read, Admin Write)
+    match /cms_homepage_categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(categoryId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /cms_nested_services/{serviceId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(serviceId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    // 26. SIM Student Arrival Groups & Export History (Strict Admin-Only Access)
+    match /sim_arrival_groups/{groupId} {
+      allow get, list: if isAdmin();
+      allow create, update: if isAdmin() && isValidId(groupId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    match /sim_export_history/{exportId} {
+      allow get, list: if isAdmin();
+      allow create, update: if isAdmin() && isValidId(exportId) && hasNoSensitiveCredentials();
+      allow delete: if isAdmin();
+    }
+
+    // 27. Contact Us Submissions & Admin Inquiry Inbox (`contact_submissions/{submissionId}`)
+    // - Both Guest and Authenticated Visitors can create valid inquiries with status == 'New'
+    // - Visitors cannot read other people's submissions (only Admins or the authenticated submitter reading their own inquiry)
+    // - Visitors cannot modify inquiry status, staff assignment, notes, or replies (Admin-only update)
+    // - Accidental permanent deletion is prevented (inquiries are archived instead)
+    match /contact_submissions/{submissionId} {
+      allow get: if isAdmin() || (
+        isAuthenticated() &&
+        resource.data.userId is string &&
+        resource.data.userId == request.auth.uid
+      );
+      allow list: if isAdmin();
+
+      allow create: if isValidId(submissionId)
+        && hasNoSensitiveCredentials()
+        && request.resource.data.keys().hasAll([
+          'submissionId',
+          'ticketId',
+          'fullName',
+          'email',
+          'category',
+          'subject',
+          'message',
+          'status',
+          'submittedAt'
+        ])
+        && request.resource.data.submissionId == submissionId
+        && isBoundedString(request.resource.data.ticketId, 4, 80)
+        && isBoundedString(request.resource.data.fullName, 2, 120)
+        && isValidEmail(request.resource.data.email)
+        && isBoundedString(request.resource.data.category, 2, 120)
+        && isBoundedString(request.resource.data.subject, 2, 250)
+        && isBoundedString(request.resource.data.message, 10, 5000)
+        && request.resource.data.status == 'New'
+        && (!('archived' in request.resource.data) || request.resource.data.archived == false)
+        && (
+          !('userId' in request.resource.data) ||
+          request.resource.data.userId == null ||
+          (isAuthenticated() && request.resource.data.userId == request.auth.uid)
+        );
+
+      allow update: if isAdmin()
+        && isValidId(submissionId)
+        && hasNoSensitiveCredentials()
+        && request.resource.data.status in ['New', 'Read', 'In Progress', 'Resolved', 'Closed'];
+
+      allow delete: if false;
+    }
+
+    // 28. Site Settings & Developer Profile Showcase (`site_settings/{settingId}`)
+    // - Public visitors can read published site settings (such as `site_settings/developer_profile`)
+    // - Internal Smart Application retention config (`site_settings/application_retention`) is restricted to admissions roles
+    // - Only authorized Super Admin / Developer accounts (or Smart App Admin for retention config) can create or update
+    match /site_settings/{settingId} {
+      allow get: if settingId == 'application_retention'
+        ? (isSmartAppAdmin() || isSmartAppCounsellor() || isSmartAppViewer())
+        : true;
+      allow list: if isAdmin() || isSmartAppAdmin();
+      allow create, update: if isValidId(settingId)
+        && hasNoSensitiveCredentials()
+        && (
+          (
+            settingId == 'application_retention' &&
+            isSmartAppAdmin() &&
+            incoming().keys().hasOnly(['withdrawnAndRejectedRetentionDays', 'updatedAt', 'updatedByEmail']) &&
+            incoming().withdrawnAndRejectedRetentionDays is number &&
+            incoming().withdrawnAndRejectedRetentionDays >= 7 &&
+            incoming().withdrawnAndRejectedRetentionDays <= 3650
+          ) || (
+            settingId != 'application_retention' &&
+            isAdmin()
+          )
+        );
+      allow delete: if false;
+    }
+
+    // 29. Flight Price Alerts (`flight_price_alerts/{alertId}`)
+    // - Strictly isolated to the authenticated owner UID or authorized Administrators
+    match /flight_price_alerts/{alertId} {
+      allow get, list: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isValidId(alertId)
+        && hasNoSensitiveCredentials()
+        && isSignedIn()
+        && (isAdmin() || request.resource.data.userId == request.auth.uid)
+        && isBoundedString(request.resource.data.origin, 3, 10)
+        && isBoundedString(request.resource.data.destination, 3, 10)
+        && request.resource.data.targetPrice is number
+        && request.resource.data.targetPrice > 0;
+      allow update: if isValidId(alertId)
+        && hasNoSensitiveCredentials()
+        && isSignedIn()
+        && (isAdmin() || (resource.data.userId == request.auth.uid && request.resource.data.userId == resource.data.userId))
+        && request.resource.data.targetPrice is number
+        && request.resource.data.targetPrice > 0;
+      allow delete: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+    }
+
+    // 30. Internal Employee Access Requests (`internal_access_requests/{requestId}`)
+    // - Applicants can submit a pending request (approvalStatus == 'pending', isActive == false, assignedRole == null)
+    // - Applicants can NEVER self-approve, assign roles, or activate their own internal account
+    // - Only verified Administrators can list, approve, reject, or modify internal access requests
+    match /internal_access_requests/{requestId} {
+      allow get: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow list: if isAdmin();
+
+      allow create: if isValidId(requestId)
+        && hasNoSensitiveCredentials()
+        && (
+          isAdmin() || (
+            request.resource.data.approvalStatus == 'pending'
+            && request.resource.data.isActive == false
+            && request.resource.data.assignedRole == null
+            && request.resource.data.portalAccess == 'internal'
+          )
+        );
+
+      allow update, delete: if isAdmin() && isValidId(requestId) && hasNoSensitiveCredentials();
+    }
+
+    // 31. Global Trash / Recycle Bin (`global_trash/{trashId}`)
+    // - Strictly restricted to verified Administrators
+    match /global_trash/{trashId} {
+      allow read, write: if isAdmin() && isValidId(trashId) && hasNoSensitiveCredentials();
+    }
+
+    // Helper: Authorized Deadline Administrators (Super Admin, Admin, or Approved Active Admission Manager)
+    function isAuthorizedDeadlineAdmin() {
+      return isAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/staff_members/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/staff_members/$(request.auth.uid)).data.isActive == true &&
+        get(/databases/$(database)/documents/staff_members/$(request.auth.uid)).data.approvalStatus == 'approved' &&
+        get(/databases/$(database)/documents/staff_members/$(request.auth.uid)).data.assignedRole in ['Super Admin', 'Administrator', 'Admission Manager']
+      );
+    }
+
+    // Helper: Strict Validation Blueprint for University Admission Deadline Records
+    function isValidUniversityAdmissionDeadline(data) {
+      return data.keys().hasAll([
+          'id',
+          'universityId',
+          'universityName',
+          'logoStoragePath',
+          'logoDownloadUrl',
+          'logoFileName',
+          'logoMimeType',
+          'logoFileSize',
+          'admissionIntake',
+          'applicationDeadline',
+          'deadlineTimestampMs',
+          'publicationStatus',
+          'published',
+          'displayOrder',
+          'createdAt',
+          'updatedAt',
+          'createdByUid',
+          'createdByEmail',
+          'updatedByUid',
+          'updatedByEmail'
+        ])
+        && data.keys().hasOnly([
+          'id',
+          'universityId',
+          'universityName',
+          'logoStoragePath',
+          'logoDownloadUrl',
+          'logoFallbackDataUrl',
+          'logoFileName',
+          'logoMimeType',
+          'logoFileSize',
+          'admissionIntake',
+          'intakeLabel',
+          'applicationDeadline',
+          'deadlineTimestampMs',
+          'publicationStatus',
+          'published',
+          'displayOrder',
+          'createdAt',
+          'updatedAt',
+          'createdByUid',
+          'createdByEmail',
+          'updatedByUid',
+          'updatedByEmail'
+        ])
+        && isBoundedString(data.id, 2, 128)
+        && isBoundedString(data.universityId, 2, 128)
+        && isBoundedString(data.universityName, 2, 160)
+        && isBoundedString(data.logoStoragePath, 3, 500)
+        && isBoundedString(data.logoDownloadUrl, 5, 2048)
+        && (data.logoDownloadUrl.matches('^https://.*') || data.logoDownloadUrl.matches('^/.*'))
+        && (
+          !('logoFallbackDataUrl' in data) || (
+            isBoundedString(data.logoFallbackDataUrl, 16, 250000) &&
+            data.logoFallbackDataUrl.matches('^data:image/(png|jpeg|webp|svg\\+xml);base64,[A-Za-z0-9+/=]+$')
+          )
+        )
+        && isBoundedString(data.logoFileName, 1, 200)
+        && data.logoMimeType in ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']
+        && data.logoFileSize is number
+        && data.logoFileSize >= 0
+        && data.logoFileSize <= 5242880
+        && data.admissionIntake in ['Spring', 'Fall', 'Other']
+        && (!('intakeLabel' in data) || isBoundedString(data.intakeLabel, 0, 80))
+        && data.applicationDeadline is string
+        && data.applicationDeadline.size() == 10
+        && data.applicationDeadline.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && data.deadlineTimestampMs is number
+        && data.deadlineTimestampMs > 0
+        && data.publicationStatus in ['published', 'unpublished']
+        && data.published is bool
+        && (
+          (data.publicationStatus == 'published' && data.published == true) ||
+          (data.publicationStatus == 'unpublished' && data.published == false)
+        )
+        && data.displayOrder is number
+        && data.displayOrder >= 0
+        && data.displayOrder <= 10000
+        && isBoundedString(data.createdAt, 10, 64)
+        && isBoundedString(data.updatedAt, 10, 64)
+        && isBoundedString(data.createdByUid, 1, 128)
+        && isBoundedString(data.createdByEmail, 3, 254)
+        && isBoundedString(data.updatedByUid, 1, 128)
+        && isBoundedString(data.updatedByEmail, 3, 254);
+    }
+
+    // 32. Homepage University Admission Deadlines (`university_admission_deadlines/{deadlineId}`)
+    // - Public visitors can read ONLY published deadline records (`published == true && publicationStatus == 'published'`)
+    // - Only Super Admin and authorized administrators can create, update, or delete deadline records
+    match /university_admission_deadlines/{deadlineId} {
+      allow get: if isValidId(deadlineId) && (
+        (resource.data.published == true && resource.data.publicationStatus == 'published') ||
+        isAuthorizedDeadlineAdmin()
+      );
+
+      allow list: if (
+        resource.data.published == true && resource.data.publicationStatus == 'published'
+      ) || isAdmin();
+
+      allow create: if isSignedIn()
+        && isValidId(deadlineId)
+        && incoming().id == deadlineId
+        && hasNoSensitiveCredentials()
+        && isValidUniversityAdmissionDeadline(incoming())
+        && isAuthorizedDeadlineAdmin();
+
+      allow update: if isSignedIn()
+        && isValidId(deadlineId)
+        && hasNoSensitiveCredentials()
+        && isValidUniversityAdmissionDeadline(incoming())
+        && incoming().id == existing().id
+        && incoming().createdAt == existing().createdAt
+        && isAuthorizedDeadlineAdmin();
+
+      allow delete: if isSignedIn()
+        && isValidId(deadlineId)
+        && isAuthorizedDeadlineAdmin();
+    }
+
+    // Helper: Ensure raw API keys/secrets are NEVER written to Firestore transport collections
+    function hasNoApiSecrets() {
+      return hasNoSensitiveCredentials() && !incoming().keys().hasAny([
+        'apiKey',
+        'apiSecret',
+        'serviceKey',
+        'clientSecret',
+        'serpApiKey',
+        'bearerToken',
+        'privateKey',
+        'encryptionKey'
+      ]);
+    }
+
+    // 33. Transport API Provider Non-Secret Metadata (`transport_api_providers/{providerId}`)
+    // - Strictly Admin-only read/write; raw API credentials are encrypted server-side and blocked from Firestore
+    match /transport_api_providers/{providerId} {
+      allow get, list: if isAdmin();
+      allow create, update: if isAdmin()
+        && isValidId(providerId)
+        && hasNoApiSecrets()
+        && incoming().id == providerId
+        && incoming().transportType in ['flight', 'ktx', 'bus']
+        && incoming().status in ['active', 'inactive']
+        && incoming().environment in ['sandbox', 'production']
+        && isBoundedString(incoming().name, 2, 120)
+        && isBoundedString(incoming().apiBaseUrl, 8, 500)
+        && incoming().apiBaseUrl.matches('^https://.*');
+      allow delete: if isAdmin() && isValidId(providerId);
+    }
+
+    // 34. Immutable Transport API Configuration Audit Logs (`transport_api_audit_logs/{logId}`)
+    match /transport_api_audit_logs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isAdmin()
+        && isValidId(logId)
+        && hasNoApiSecrets()
+        && incoming().id == logId
+        && incoming().transportType in ['flight', 'ktx', 'bus']
+        && isBoundedString(incoming().action, 2, 64)
+        && isBoundedString(incoming().summary, 2, 1000);
+      allow update, delete: if false; // Strictly immutable audit trail
+    }
+
+    // Helper: Strict Validation Blueprint for Smart University Application Records
+    function isValidSmartApplication(data) {
+      return data.keys().hasAll([
+          'id',
+          'userId',
+          'universityId',
+          'universityName',
+          'intake',
+          'degreeLevel',
+          'round',
+          'status',
+          'personal',
+          'education',
+          'language',
+          'program',
+          'finance',
+          'documents',
+          'consent',
+          'createdAt',
+          'updatedAt',
+          'notes'
+        ])
+        && data.keys().hasOnly([
+          'id',
+          'userId',
+          'universityId',
+          'universityName',
+          'universityLogoUrl',
+          'intake',
+          'intakeStartDate',
+          'applicationDeadline',
+          'degreeLevel',
+          'round',
+          'status',
+          'personal',
+          'education',
+          'language',
+          'program',
+          'finance',
+          'documents',
+          'requiredDocTypes',
+          'requestedDocuments',
+          'requestedDocumentsMessage',
+          'aiFilledFields',
+          'aiCheckWarningFields',
+          'verifiedFields',
+          'aiPassportSnapshot',
+          'consent',
+          'passportNumberNormalized',
+          'duplicatePassportFlag',
+          'duplicatePassportApplicationIds',
+          'createdAt',
+          'updatedAt',
+          'submittedAt',
+          'assignedTo',
+          'assignedToName',
+          'assignedToEmail',
+          'notes'
+        ])
+        && isValidId(data.id)
+        && isBoundedString(data.userId, 1, 128)
+        && isBoundedString(data.universityId, 1, 128)
+        && isBoundedString(data.universityName, 1, 200)
+        && isBoundedString(data.intake, 0, 120)
+        && isBoundedString(data.degreeLevel, 0, 80)
+        && isBoundedString(data.round, 0, 120)
+        && isValidSmartApplicationStatus(data.status)
+        && data.personal is map
+        && data.education is map
+        && data.language is map
+        && data.program is map
+        && data.finance is map
+        && data.documents is map
+        && data.documents.size() <= 40
+        && data.consent is map
+        && data.notes is list
+        && data.notes.size() <= 200
+        && isBoundedString(data.createdAt, 10, 64)
+        && isBoundedString(data.updatedAt, 10, 64)
+        && (!('requestedDocumentsMessage' in data) || isBoundedString(data.requestedDocumentsMessage, 0, 2000))
+        && (!('passportNumberNormalized' in data) || isBoundedString(data.passportNumberNormalized, 0, 40));
+    }
+
+    function isValidSmartApplicationHistoryEvent(data) {
+      return data.keys().hasAll(['actorUid', 'actorName', 'actorEmail', 'actorRole', 'when', 'to'])
+        && data.keys().hasOnly([
+          'actorUid',
+          'actorName',
+          'actorEmail',
+          'actorRole',
+          'eventType',
+          'assignedToName',
+          'when',
+          'from',
+          'to',
+          'message',
+          'requestedDocuments'
+        ])
+        && isBoundedString(data.actorUid, 1, 128)
+        && isBoundedString(data.actorName, 0, 160)
+        && isBoundedString(data.actorEmail, 0, 254)
+        && data.actorRole in ['student', 'admin', 'counsellor', 'system']
+        && (!('eventType' in data) || data.eventType == null || isBoundedString(data.eventType, 1, 64))
+        && (!('assignedToName' in data) || data.assignedToName == null || isBoundedString(data.assignedToName, 0, 160))
+        && isBoundedString(data.when, 10, 64)
+        && (!('from' in data) || data.from == null || isValidSmartApplicationStatus(data.from))
+        && isValidSmartApplicationStatus(data.to)
+        && (!('message' in data) || data.message == null || isBoundedString(data.message, 0, 2000))
+        && (!('requestedDocuments' in data) || data.requestedDocuments == null || (data.requestedDocuments is list && data.requestedDocuments.size() <= 30));
+    }
+
+    function isValidDocumentAccessLog(data) {
+      return data.keys().hasAll([
+          'applicationId',
+          'docType',
+          'fileName',
+          'storagePath',
+          'actorUid',
+          'actorName',
+          'actorEmail',
+          'actorRole',
+          'action',
+          'accessedAt'
+        ])
+        && data.keys().hasOnly([
+          'applicationId',
+          'docType',
+          'fileName',
+          'storagePath',
+          'actorUid',
+          'actorName',
+          'actorEmail',
+          'actorRole',
+          'action',
+          'accessedAt'
+        ])
+        && isBoundedString(data.applicationId, 1, 128)
+        && isBoundedString(data.docType, 1, 80)
+        && isBoundedString(data.fileName, 1, 220)
+        && isBoundedString(data.storagePath, 1, 500)
+        && isBoundedString(data.actorUid, 1, 128)
+        && isBoundedString(data.actorName, 0, 160)
+        && isBoundedString(data.actorEmail, 0, 254)
+        && data.actorRole in ['admin', 'counsellor', 'viewer']
+        && data.action in ['preview', 'download', 'zip_export', 'pdf_export', 'csv_export', 'xlsx_export']
+        && isBoundedString(data.accessedAt, 10, 64);
+    }
+
+    // 35. Reusable Student Application Profile (`users/{userId}/applicationProfile/{profileId}`)
+    // - Stores reusable personal, education, and language data across applications
+    // - Strictly private to owning student or Smart Application Admin
+    match /users/{userId}/applicationProfile/{profileId} {
+      allow get, list: if isOwner(userId) || isSmartAppAdmin();
+      allow create, update: if (isOwner(userId) || isSmartAppAdmin())
+        && isValidId(profileId)
+        && hasNoSensitiveCredentials()
+        && incoming().keys().hasOnly(['userId', 'personal', 'education', 'language', 'updatedAt'])
+        && incoming().userId == userId
+        && incoming().personal is map
+        && incoming().education is map
+        && incoming().language is map
+        && isBoundedString(incoming().updatedAt, 10, 64);
+      allow delete: if isOwner(userId) || isSmartAppAdmin();
+    }
+
+    // 36. EVERYKR Smart University Applications (`applications/{applicationId}`)
+    // - Students can read/create their own drafts and edit ONLY permitted fields while `draft` or `documents_missing`,
+    //   or withdraw their own pre-decision application
+    // - Students can NEVER alter admin-only fields (notes, assignedTo*, duplicatePassport*) or jump to admin statuses
+    // - Admins (`admin` claim or verified EVERYKR admin): full access
+    // - Counsellors (`counsellor` claim): read/update ONLY status, requestedDocuments, notes on assigned applications
+    // - Viewers (`viewer` claim): strictly read-only access
+    match /applications/{applicationId} {
+      // Split get vs list so deterministic transaction create (`tx.get(primaryRef)`) succeeds when the doc does not exist yet
+      allow get: if isSignedIn() && (
+        (resource == null && applicationId.matches('^app_[a-zA-Z0-9_-]{8,120}$')) ||
+        (resource != null && resource.data.userId == request.auth.uid) ||
+        isSmartAppAdmin() ||
+        isSmartAppViewer() ||
+        (isSmartAppCounsellor() && resource != null && resource.data.get('assignedTo', '') == request.auth.uid)
+      );
+
+      allow list: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        isSmartAppAdmin() ||
+        isSmartAppViewer() ||
+        (isSmartAppCounsellor() && resource.data.assignedTo == request.auth.uid)
+      );
+
+      allow create: if isSignedIn()
+        && isValidId(applicationId)
+        && incoming().id == applicationId
+        && hasNoSensitiveCredentials()
+        && isValidSmartApplication(incoming())
+        && (
+          isSmartAppAdmin() || (
+            incoming().userId == request.auth.uid &&
+            incoming().status == 'draft' &&
+            (!('assignedTo' in incoming()) || incoming().assignedTo == null) &&
+            (!('assignedToName' in incoming()) || incoming().assignedToName == null) &&
+            (!('assignedToEmail' in incoming()) || incoming().assignedToEmail == null) &&
+            (!('duplicatePassportFlag' in incoming()) || incoming().duplicatePassportFlag == false) &&
+            (!('duplicatePassportApplicationIds' in incoming()) || incoming().duplicatePassportApplicationIds.size() == 0) &&
+            (!('submittedAt' in incoming()) || incoming().submittedAt == null) &&
+            incoming().notes.size() == 0
+          )
+        );
+
+      allow update: if isSignedIn()
+        && isValidId(applicationId)
+        && hasNoSensitiveCredentials()
+        && isValidSmartApplication(incoming())
+        && incoming().id == existing().id
+        && incoming().userId == existing().userId
+        && incoming().createdAt == existing().createdAt
+        && (
+          // Action 1: Admin full operational update
+          isSmartAppAdmin() ||
+          // Action 2: Assigned Counsellor restricted to review status, document verification, requested documents, and internal notes
+          (
+            isSmartAppCounsellor() &&
+            existing().assignedTo == request.auth.uid &&
+            incoming().assignedTo == existing().assignedTo &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'status',
+              'documents',
+              'requestedDocuments',
+              'requestedDocumentsMessage',
+              'notes',
+              'updatedAt'
+            ])
+          ) ||
+          // Action 3: Student editing their own draft (or submitting / withdrawing from draft)
+          (
+            existing().userId == request.auth.uid &&
+            existing().status == 'draft' &&
+            incoming().status in ['draft', 'submitted', 'withdrawn'] &&
+            incoming().universityId == existing().universityId &&
+            incoming().universityName == existing().universityName &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'intake',
+              'intakeStartDate',
+              'applicationDeadline',
+              'degreeLevel',
+              'round',
+              'personal',
+              'education',
+              'language',
+              'program',
+              'finance',
+              'documents',
+              'requiredDocTypes',
+              'requestedDocuments',
+              'requestedDocumentsMessage',
+              'aiFilledFields',
+              'aiCheckWarningFields',
+              'verifiedFields',
+              'aiPassportSnapshot',
+              'consent',
+              'passportNumberNormalized',
+              'status',
+              'submittedAt',
+              'updatedAt'
+            ]) &&
+            (incoming().status != 'draft' || incoming().get('submittedAt', null) == existing().get('submittedAt', null))
+          ) ||
+          // Action 4: Student uploading requested missing documents & resubmitting (or withdrawing)
+          (
+            existing().userId == request.auth.uid &&
+            existing().status == 'documents_missing' &&
+            incoming().status in ['documents_missing', 'submitted', 'withdrawn'] &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'documents',
+              'requiredDocTypes',
+              'requestedDocuments',
+              'requestedDocumentsMessage',
+              'status',
+              'updatedAt'
+            ])
+          ) ||
+          // Action 5: Student withdrawing their own pre-decision application
+          (
+            existing().userId == request.auth.uid &&
+            existing().status in ['submitted', 'under_review'] &&
+            incoming().status == 'withdrawn' &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+          )
+        );
+
+      allow delete: if isSignedIn() && (
+        isSmartAppAdmin() ||
+        (existing().userId == request.auth.uid && existing().status == 'draft')
+      );
+
+      // 36a. Immutable Application Status History Timeline (`applications/{applicationId}/history/{eventId}`)
+      match /history/{eventId} {
+        allow get, list: if isSignedIn() && (
+          isSmartAppAdmin() ||
+          isSmartAppViewer() ||
+          get(/databases/$(database)/documents/applications/$(applicationId)).data.userId == request.auth.uid ||
+          (isSmartAppCounsellor() && get(/databases/$(database)/documents/applications/$(applicationId)).data.assignedTo == request.auth.uid)
+        );
+
+        allow create: if isSignedIn()
+          && isValidId(eventId)
+          && hasNoSensitiveCredentials()
+          && isValidSmartApplicationHistoryEvent(incoming())
+          && incoming().actorUid == request.auth.uid
+          && (
+            (isSmartAppAdmin() && incoming().actorRole in ['admin', 'system', 'student']) ||
+            (
+              isSmartAppCounsellor() &&
+              incoming().actorRole == 'counsellor' &&
+              get(/databases/$(database)/documents/applications/$(applicationId)).data.assignedTo == request.auth.uid
+            ) ||
+            (
+              get(/databases/$(database)/documents/applications/$(applicationId)).data.userId == request.auth.uid &&
+              incoming().actorRole == 'student' &&
+              incoming().to in ['draft', 'submitted', 'documents_missing', 'withdrawn']
+            )
+          );
+
+        allow update, delete: if false; // Strictly immutable status timeline
+      }
+
+      // 36b. Immutable Admin Document Access Audit Log (`applications/{applicationId}/documentAccessLog/{logId}`)
+      // Least-privilege policy: Viewers have ZERO access to raw student documents (preview/download/zip_export)
+      // and may only record masked summary exports (`pdf_export`, `csv_export`, `xlsx_export`).
+      match /documentAccessLog/{logId} {
+        allow get, list: if isSmartAppAdmin();
+        allow create: if isSignedIn()
+          && isValidId(logId)
+          && hasNoSensitiveCredentials()
+          && isValidDocumentAccessLog(incoming())
+          && incoming().actorUid == request.auth.uid
+          && incoming().applicationId == applicationId
+          && (
+            (isSmartAppAdmin() && incoming().actorRole == 'admin') ||
+            (
+              isSmartAppViewer() &&
+              incoming().actorRole == 'viewer' &&
+              incoming().action in ['pdf_export', 'csv_export', 'xlsx_export']
+            ) ||
+            (
+              isSmartAppCounsellor() &&
+              incoming().actorRole == 'counsellor' &&
+              get(/databases/$(database)/documents/applications/$(applicationId)).data.assignedTo == request.auth.uid
+            )
+          );
+        allow update, delete: if false; // Strictly immutable access audit log
+      }
+    }
+
+  }
+}
+
+

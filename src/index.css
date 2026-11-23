@@ -1,0 +1,794 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-primary: 'Manrope', 'Inter', 'Hind Siliguri', 'Noto Sans Bengali', 'Noto Sans KR', 'Noto Sans Devanagari', 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Noto Sans SC', 'Noto Sans JP', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html[lang="en"] {
+    --font-primary: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  html[lang="bn"] {
+    --font-primary: 'Hind Siliguri', 'Noto Sans Bengali', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="ko"] {
+    --font-primary: 'Noto Sans KR', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="ne"],
+  html[lang="hi"] {
+    --font-primary: 'Noto Sans Devanagari', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="ur"] {
+    --font-primary: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="ar"] {
+    --font-primary: 'Noto Sans Arabic', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="zh"] {
+    --font-primary: 'Noto Sans SC', 'Manrope', system-ui, sans-serif;
+  }
+
+  html[lang="ja"] {
+    --font-primary: 'Noto Sans JP', 'Manrope', system-ui, sans-serif;
+  }
+
+  html,
+  body,
+  .font-sans,
+  button,
+  input,
+  textarea,
+  select {
+    font-family: var(--font-primary);
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100vw;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Language-specific optical line-height and letter-spacing adjustments */
+  html[lang="bn"] body {
+    font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Manrope', sans-serif;
+    line-height: 1.65;
+    letter-spacing: 0.005em;
+  }
+
+  html[lang="bn"] h1,
+  html[lang="bn"] h2,
+  html[lang="bn"] h3,
+  html[lang="bn"] h4 {
+    font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Manrope', sans-serif;
+    line-height: 1.32;
+  }
+
+  html[lang="ur"] body {
+    font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Manrope', sans-serif;
+    line-height: 1.95;
+  }
+
+  html[lang="ur"] h1,
+  html[lang="ur"] h2,
+  html[lang="ur"] h3 {
+    font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Manrope', sans-serif;
+    line-height: 1.6;
+  }
+
+  html[lang="ar"] body {
+    font-family: 'Noto Sans Arabic', 'Manrope', sans-serif;
+    line-height: 1.72;
+  }
+
+  html[lang="ne"] body,
+  html[lang="hi"] body {
+    font-family: 'Noto Sans Devanagari', 'Manrope', sans-serif;
+    line-height: 1.65;
+  }
+
+  html[lang="ko"] body {
+    font-family: 'Noto Sans KR', 'Manrope', sans-serif;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  html[lang="zh"] body {
+    font-family: 'Noto Sans SC', 'Manrope', sans-serif;
+    line-height: 1.65;
+  }
+
+  html[lang="ja"] body {
+    font-family: 'Noto Sans JP', 'Manrope', sans-serif;
+    line-height: 1.68;
+  }
+
+  .font-mono,
+  .tabular-nums {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes everykrGoldSweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+.everykr-gold-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #D6B875 0%,
+    #EBD39A 36%,
+    #FFFFFF 49%,
+    #EBD39A 60%,
+    #D6B875 100%
+  );
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: everykrGoldSweep 2.4s 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes everykrSubtleBreath {
+  0%, 100% {
+    box-shadow: 0 10px 30px -6px rgba(5, 11, 24, 0.78), 0 0 16px rgba(75, 163, 255, 0.14);
+  }
+  50% {
+    box-shadow: 0 12px 34px -6px rgba(5, 11, 24, 0.85), 0 0 24px rgba(75, 163, 255, 0.28);
+  }
+}
+
+.everykr-ai-launcher-glow {
+  animation: everykrSubtleBreath 4.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .everykr-ai-launcher-glow,
+  .everykr-gold-shimmer {
+    animation: none;
+  }
+  .everykr-gold-shimmer {
+    background-position: 0% 0;
+  }
+}
+
+/* Custom scrollbar for clean UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dark mode scrollbars */
+.dark ::-webkit-scrollbar-track {
+  background: #050b18;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e3354;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #2c4a78;
+}
+
+/* ========================================================================== */
+/* EVERYKR SIGNATURE LOGO REVEAL ANIMATION SYSTEM                             */
+/* ========================================================================== */
+
+@keyframes ekrRibbonDraw {
+  0% {
+    stroke-dasharray: 560;
+    stroke-dashoffset: 560;
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  74% {
+    stroke-dasharray: 560;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 560;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes ekrSwooshDraw {
+  0%, 8% {
+    stroke-dasharray: 580;
+    stroke-dashoffset: 580;
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  78% {
+    stroke-dasharray: 580;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 580;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes ekrPlaneCurvedFlight {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  78% {
+    offset-distance: 100%;
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  92% {
+    offset-distance: 100%;
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes ekrLogoFinishGlow {
+  0% {
+    filter: drop-shadow(0 0 0 rgba(0, 132, 255, 0));
+    transform: scale(0.99);
+  }
+  70% {
+    filter: drop-shadow(0 0 10px rgba(0, 132, 255, 0.22))
+      drop-shadow(0 0 18px rgba(236, 72, 153, 0.16));
+    transform: scale(1.012);
+  }
+  100% {
+    filter: drop-shadow(0 0 0 rgba(0, 132, 255, 0));
+    transform: scale(1);
+  }
+}
+
+@keyframes ekrSplashProgressFill {
+  0% {
+    width: 6%;
+    opacity: 0.75;
+  }
+  78% {
+    width: 100%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0.9;
+  }
+}
+
+@keyframes ekrSplashCardEntry {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ekr-svg-ribbon-path {
+  stroke-dasharray: 560;
+  stroke-dashoffset: 560;
+  animation: ekrRibbonDraw 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ekr-svg-swoosh-path {
+  stroke-dasharray: 580;
+  stroke-dashoffset: 580;
+  animation: ekrSwooshDraw 2.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ekr-svg-core-trail {
+  stroke-dasharray: 580;
+  stroke-dashoffset: 580;
+  animation: ekrSwooshDraw 2.1s 0.04s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ekr-svg-airplane-actor {
+  offset-path: path('M 42 392 C 156 332, 268 238, 442 82');
+  offset-rotate: auto;
+  animation: ekrPlaneCurvedFlight 2.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity, offset-distance;
+}
+
+.ekr-logo-is-animating .ekr-logo-base-img {
+  animation: ekrLogoFinishGlow 2.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ekr-logo-seq-compact .ekr-svg-ribbon-path,
+.ekr-logo-seq-compact .ekr-svg-swoosh-path,
+.ekr-logo-seq-compact .ekr-svg-core-trail,
+.ekr-logo-seq-compact .ekr-svg-airplane-actor {
+  animation-duration: 1.85s;
+}
+
+.ekr-splash-progress-bar {
+  animation: ekrSplashProgressFill 4.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ekr-splash-card {
+  animation: ekrSplashCardEntry 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ========================================================================== */
+/* WEBSITE-WIDE SUBTLE HOVER INTERACTIONS (NO IDLE INFINITE WOBBLE)           */
+/* ========================================================================== */
+
+.ekr-icon-plane-glide,
+.ekr-icon-book-float,
+.ekr-icon-cap-float,
+.ekr-icon-building-lift,
+.ekr-icon-sim-wave,
+.ekr-icon-transit-pass,
+.ekr-icon-emergency-pulse,
+.ekr-icon-pin-bounce,
+.ekr-icon-community-float,
+.ekr-icon-msg-bounce,
+.ekr-icon-compass-spin,
+.ekr-icon-news-reveal,
+.ekr-icon-ai-idle {
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), color 160ms ease;
+}
+
+.group:hover .ekr-icon-plane-glide,
+.ekr-icon-plane-glide:hover {
+  transform: translate3d(2px, -2px, 0);
+}
+
+.group:hover .ekr-icon-book-float,
+.ekr-icon-book-float:hover,
+.group:hover .ekr-icon-cap-float,
+.ekr-icon-cap-float:hover,
+.group:hover .ekr-icon-building-lift,
+.ekr-icon-building-lift:hover,
+.group:hover .ekr-icon-pin-bounce,
+.ekr-icon-pin-bounce:hover,
+.group:hover .ekr-icon-community-float,
+.ekr-icon-community-float:hover,
+.group:hover .ekr-icon-msg-bounce,
+.ekr-icon-msg-bounce:hover,
+.group:hover .ekr-icon-news-reveal,
+.ekr-icon-news-reveal:hover {
+  transform: translateY(-1.5px);
+}
+
+.group:hover .ekr-icon-transit-pass,
+.ekr-icon-transit-pass:hover {
+  transform: translateX(2px);
+}
+
+.group:hover .ekr-icon-sim-wave,
+.ekr-icon-sim-wave:hover,
+.group:hover .ekr-icon-emergency-pulse,
+.ekr-icon-emergency-pulse:hover,
+.group:hover .ekr-icon-ai-idle,
+.ekr-icon-ai-idle:hover {
+  transform: scale(1.04);
+}
+
+.group:hover .ekr-icon-compass-spin,
+.ekr-icon-compass-spin:hover {
+  transform: rotate(12deg);
+}
+
+/* Like / Heart Button — Clean Action Feedback */
+@keyframes ekrHeartPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ekr-heart-pop {
+  animation: ekrHeartPop 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Staggered Card Entrance Reveal */
+@keyframes ekrCardRevealUp {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ekr-card-stagger {
+  animation: ekrCardRevealUp 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--stagger-idx, 0) * 40ms);
+}
+
+/* Accessibility: Respect Reduced Motion User Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .ekr-svg-ribbon-path,
+  .ekr-svg-swoosh-path,
+  .ekr-svg-core-trail,
+  .ekr-svg-airplane-actor,
+  .ekr-logo-is-animating .ekr-logo-base-img,
+  .ekr-splash-progress-bar,
+  .ekr-splash-card,
+  .ekr-icon-plane-glide,
+  .ekr-icon-book-float,
+  .ekr-icon-cap-float,
+  .ekr-icon-building-lift,
+  .ekr-icon-sim-wave,
+  .ekr-icon-transit-pass,
+  .ekr-icon-emergency-pulse,
+  .ekr-icon-pin-bounce,
+  .ekr-icon-community-float,
+  .ekr-icon-msg-bounce,
+  .ekr-heart-pop,
+  .ekr-icon-compass-spin,
+  .ekr-icon-news-reveal,
+  .ekr-icon-ai-idle,
+  .ekr-card-stagger {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================================
+   EVERYKR UNIFIED INSTITUTIONAL DESIGN SYSTEM (DAY + NIGHT)
+   Palette: Deep Navy #061B49 · Royal Blue #0754B8 · Electric Blue #0875E8
+            Premium Gold #FFB800 · White #FFFFFF · Soft Canvas #F5F8FD
+   ============================================================================ */
+
+:root {
+  /* Brand & Semantic Palette (Day Mode) */
+  --ekr-brand-navy: #061B49;
+  --ekr-brand-primary: #0754B8;
+  --ekr-brand-electric: #0875E8;
+  --ekr-brand-gold: #FFB800;
+  --ekr-brand-gold-soft: rgba(255, 184, 0, 0.14);
+
+  --ekr-bg-base: #F5F8FD;
+  --ekr-bg-depth: #EDF3FC;
+  --ekr-text-primary: #061B49;
+  --ekr-text-secondary: #475569;
+  --ekr-text-muted: #64748B;
+
+  /* Crisp Institutional Surfaces (Day Mode) */
+  --ekr-glass-nav-bg: rgba(255, 255, 255, 0.92);
+  --ekr-glass-nav-border: rgba(6, 27, 73, 0.08);
+  --ekr-glass-panel-bg: #FFFFFF;
+  --ekr-glass-panel-hover: #FFFFFF;
+  --ekr-glass-card-bg: #FFFFFF;
+  --ekr-glass-card-hover: #FFFFFF;
+  --ekr-glass-card-active-bg: #F0F6FF;
+  --ekr-glass-card-active-border: #0754B8;
+  --ekr-glass-subtle-bg: #F8FAFE;
+  --ekr-glass-subtle-hover: #EFF4FC;
+  --ekr-glass-input-bg: #FFFFFF;
+  --ekr-glass-input-border: rgba(6, 27, 73, 0.14);
+  --ekr-glass-dropdown-bg: #FFFFFF;
+  --ekr-glass-modal-bg: #FFFFFF;
+  --ekr-glass-footer-bg: #FFFFFF;
+  --ekr-sidebar-bg: #FFFFFF;
+  --ekr-sidebar-border: rgba(6, 27, 73, 0.09);
+
+  /* Crisp Hairline Borders & Restrained Elevation (Day Mode) */
+  --ekr-glass-border: rgba(6, 27, 73, 0.09);
+  --ekr-glass-border-subtle: rgba(6, 27, 73, 0.09);
+  --ekr-glass-border-hover: rgba(7, 84, 184, 0.34);
+  --ekr-glass-specular: 0 0 0 0 transparent;
+  --ekr-glass-shadow-panel: 0 1px 2px rgba(6, 27, 73, 0.04), 0 8px 24px -12px rgba(6, 27, 73, 0.08);
+  --ekr-glass-shadow-card: 0 1px 2px rgba(6, 27, 73, 0.04), 0 4px 12px -6px rgba(6, 27, 73, 0.06);
+  --ekr-glass-shadow-card-hover: 0 4px 16px -4px rgba(7, 84, 184, 0.14), 0 1px 3px rgba(6, 27, 73, 0.06);
+  --ekr-glass-shadow-dropdown: 0 16px 40px -12px rgba(6, 27, 73, 0.18), 0 2px 8px rgba(6, 27, 73, 0.06);
+  --ekr-blur-nav: 14px;
+  --ekr-blur-panel: 0px;
+  --ekr-blur-card: 0px;
+  --ekr-blur-modal: 8px;
+}
+
+.dark {
+  /* Brand & Semantic Palette (Night Mode) */
+  --ekr-brand-navy: #061B49;
+  --ekr-brand-primary: #0754B8;
+  --ekr-brand-electric: #0875E8;
+  --ekr-brand-gold: #FFB800;
+  --ekr-brand-gold-soft: rgba(255, 184, 0, 0.18);
+
+  --ekr-bg-base: #061536;
+  --ekr-bg-depth: #081B45;
+  --ekr-text-primary: #F8FAFC;
+  --ekr-text-secondary: #B8C9E5;
+  --ekr-text-muted: #8FA8CF;
+
+  /* Crisp Institutional Surfaces (Night Mode) */
+  --ekr-glass-nav-bg: rgba(6, 21, 54, 0.90);
+  --ekr-glass-nav-border: rgba(255, 255, 255, 0.10);
+  --ekr-glass-panel-bg: rgba(11, 29, 68, 0.92);
+  --ekr-glass-panel-hover: rgba(14, 35, 80, 0.96);
+  --ekr-glass-card-bg: rgba(11, 29, 68, 0.88);
+  --ekr-glass-card-hover: rgba(15, 37, 84, 0.96);
+  --ekr-glass-card-active-bg: rgba(8, 117, 232, 0.18);
+  --ekr-glass-card-active-border: #3B82F6;
+  --ekr-glass-subtle-bg: rgba(14, 34, 78, 0.78);
+  --ekr-glass-subtle-hover: rgba(20, 46, 102, 0.90);
+  --ekr-glass-input-bg: rgba(7, 20, 49, 0.88);
+  --ekr-glass-input-border: rgba(255, 255, 255, 0.14);
+  --ekr-glass-dropdown-bg: #0A1B40;
+  --ekr-glass-modal-bg: #0A1B40;
+  --ekr-glass-footer-bg: #051330;
+  --ekr-sidebar-bg: rgba(11, 29, 68, 0.94);
+  --ekr-sidebar-border: rgba(255, 255, 255, 0.10);
+
+  /* Crisp Hairline Borders & Elevation (Night Mode) */
+  --ekr-glass-border: rgba(255, 255, 255, 0.10);
+  --ekr-glass-border-subtle: rgba(255, 255, 255, 0.10);
+  --ekr-glass-border-hover: rgba(96, 165, 250, 0.42);
+  --ekr-glass-specular: 0 0 0 0 transparent;
+  --ekr-glass-shadow-panel: 0 1px 2px rgba(2, 8, 24, 0.35), 0 12px 32px -12px rgba(2, 8, 24, 0.50);
+  --ekr-glass-shadow-card: 0 1px 2px rgba(2, 8, 24, 0.32), 0 6px 18px -8px rgba(2, 8, 24, 0.42);
+  --ekr-glass-shadow-card-hover: 0 10px 28px -8px rgba(2, 8, 24, 0.58), 0 0 0 1px rgba(96, 165, 250, 0.18);
+  --ekr-glass-shadow-dropdown: 0 20px 48px -12px rgba(2, 8, 24, 0.72), 0 4px 12px rgba(2, 8, 24, 0.45);
+}
+
+/* Global Clean Architectural Canvas (Zero Decorative Floating Orbs) */
+.ekr-global-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--ekr-bg-base);
+  background-image:
+    radial-gradient(80% 45% at 50% 0%, rgba(7, 84, 184, 0.05) 0%, transparent 72%),
+    linear-gradient(180deg, #F8FAFE 0%, #F5F8FD 45%, #EEF4FC 100%);
+  transition: background-color 260ms ease;
+}
+
+.dark .ekr-global-atmosphere {
+  background-color: #061536;
+  background-image:
+    radial-gradient(75% 42% at 50% 0%, rgba(8, 117, 232, 0.16) 0%, transparent 70%),
+    linear-gradient(180deg, #051332 0%, #061B49 52%, #051435 100%);
+}
+
+/* Tier 1: Sticky Top Navigation Bar */
+.ekr-glass-nav {
+  background: var(--ekr-glass-nav-bg);
+  backdrop-filter: blur(var(--ekr-blur-nav));
+  -webkit-backdrop-filter: blur(var(--ekr-blur-nav));
+  border-bottom: 1px solid var(--ekr-glass-nav-border);
+  box-shadow: 0 1px 2px rgba(6, 27, 73, 0.04);
+}
+
+/* Tier 2: Primary Content Panels */
+.ekr-glass-panel {
+  background: var(--ekr-glass-panel-bg);
+  border: 1px solid var(--ekr-glass-border);
+  box-shadow: var(--ekr-glass-shadow-panel);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+/* Tier 3: Interactive Cards */
+.ekr-glass-card {
+  background: var(--ekr-glass-card-bg);
+  border: 1px solid var(--ekr-glass-border);
+  box-shadow: var(--ekr-glass-shadow-card);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.ekr-glass-card:hover {
+  background: var(--ekr-glass-card-hover);
+  border-color: var(--ekr-glass-border-hover);
+  box-shadow: var(--ekr-glass-shadow-card-hover);
+}
+
+/* Tier 3b: Active Selected Card */
+.ekr-glass-card-active {
+  background: var(--ekr-glass-card-active-bg);
+  border: 1.5px solid var(--ekr-glass-card-active-border);
+  box-shadow: var(--ekr-glass-shadow-card-hover);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+/* Tier 4: Subtle Nested Surface */
+.ekr-glass-subtle {
+  background: var(--ekr-glass-subtle-bg);
+  border: 1px solid var(--ekr-glass-border-subtle);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.ekr-glass-subtle:hover {
+  background: var(--ekr-glass-subtle-hover);
+  border-color: var(--ekr-glass-border-hover);
+}
+
+/* Tier 5: High-Contrast Form Inputs & Selects */
+.ekr-glass-input {
+  background: var(--ekr-glass-input-bg);
+  border: 1px solid var(--ekr-glass-input-border);
+  color: var(--ekr-text-primary);
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.ekr-glass-input:hover {
+  border-color: var(--ekr-glass-border-hover);
+}
+
+.ekr-glass-input:focus,
+.ekr-glass-input:focus-within {
+  outline: none;
+  border-color: var(--ekr-brand-electric);
+  box-shadow: 0 0 0 3px rgba(8, 117, 232, 0.16);
+}
+
+/* Tier 6: Floating Dropdowns & Modals */
+.ekr-glass-dropdown,
+.ekr-glass-modal {
+  background: var(--ekr-glass-dropdown-bg);
+  border: 1px solid var(--ekr-glass-border);
+  box-shadow: var(--ekr-glass-shadow-dropdown);
+}
+
+/* Tier 7: Institutional Footer */
+.ekr-glass-footer {
+  background: var(--ekr-glass-footer-bg);
+  border-top: 1px solid var(--ekr-glass-nav-border);
+}
+
+/* Primary Royal Blue CTA Button */
+.ekr-glass-btn-primary {
+  background: #0754B8;
+  color: #FFFFFF;
+  border: 1px solid #0754B8;
+  box-shadow: 0 1px 2px rgba(6, 27, 73, 0.12);
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.ekr-glass-btn-primary:hover {
+  background: #0875E8;
+  border-color: #0875E8;
+  box-shadow: 0 4px 12px -2px rgba(7, 84, 184, 0.34);
+}
+
+.ekr-glass-btn-primary:active {
+  transform: translateY(0.5px);
+}
+
+/* Secondary Outlined Action Button */
+.ekr-btn-secondary {
+  background: var(--ekr-glass-card-bg);
+  border: 1px solid var(--ekr-glass-input-border);
+  color: var(--ekr-text-primary);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.ekr-btn-secondary:hover {
+  background: var(--ekr-glass-subtle-hover);
+  border-color: var(--ekr-glass-border-hover);
+  color: var(--ekr-brand-primary);
+}
+
+.dark .ekr-btn-secondary:hover {
+  color: #FFFFFF;
+}
+
+/* Sidebar Surface */
+.ekr-sidebar-surface {
+  background: var(--ekr-sidebar-bg);
+  border: 1px solid var(--ekr-sidebar-border);
+  box-shadow: var(--ekr-glass-shadow-panel);
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+/* Interactive Learning Card */
+.ekr-learn-card {
+  background: var(--ekr-glass-card-bg);
+  border: 1px solid var(--ekr-glass-border-subtle);
+  box-shadow: var(--ekr-glass-shadow-card);
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ekr-learn-card:hover {
+  background: var(--ekr-glass-card-hover);
+  border-color: var(--ekr-glass-border-hover);
+  box-shadow: var(--ekr-glass-shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+/* Progress Bar Brand Accent */
+.ekr-gold-progress {
+  background: linear-gradient(90deg, #0754B8 0%, #0875E8 78%, #FFB800 100%);
+}
+
+/* Desktop Header Navigation Link Underline Indicator */
+.ekr-header-nav-link {
+  position: relative;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.ekr-header-nav-link[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 9999px;
+  background: #0754B8;
+}
+
+.dark .ekr-header-nav-link[data-active="true"]::after {
+  background: #3B82F6;
+}
+
+/* Clean Enterprise Data Table Styling */
+.ekr-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ekr-table th {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ekr-text-muted);
+  border-bottom: 1px solid var(--ekr-glass-border);
+}
+
+.ekr-table td {
+  border-bottom: 1px solid var(--ekr-glass-border);
+}
+
+
+
+

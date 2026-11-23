@@ -1,0 +1,6 @@
+{
+  "name": "EVERYKR - Complete Guide to Life in Korea",
+  "description": "All-in-one digital platform for international students in South Korea: university admission, visa guides, jobs, accommodation, community, marketplace, and daily life guidance.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

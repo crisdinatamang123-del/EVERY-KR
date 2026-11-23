@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>EVERYKR - Complete Guide to Life in Korea</title>
+    <meta
+      name="description"
+      content="All-in-one digital platform for international students in South Korea: university admission, visa guides, jobs, accommodation, community, marketplace, and daily life guidance."
+    />
+    <meta name="application-name" content="EVERYKR" />
+    <meta name="apple-mobile-web-app-title" content="EVERYKR" />
+    <meta name="theme-color" content="#050B18" />
+    <link rel="canonical" href="https://everykr.com/" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EVERYKR" />
+    <meta property="og:url" content="https://everykr.com/" />
+    <meta property="og:title" content="EVERYKR - Complete Guide to Life in Korea" />
+    <meta
+      property="og:description"
+      content="All-in-one digital platform for international students in South Korea: university admission, visa guides, jobs, accommodation, community, marketplace, and daily life guidance."
+    />
+    <meta property="og:image" content="/everykr-logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EVERYKR - Complete Guide to Life in Korea" />
+    <meta
+      name="twitter:description"
+      content="All-in-one digital platform for international students in South Korea: university admission, visa guides, jobs, accommodation, community, marketplace, and daily life guidance."
+    />
+    <meta name="twitter:image" content="/everykr-logo.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/everykr-icon.png" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/everykr-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var savedTheme = localStorage.getItem('everykr_theme');
+          var isDark =
+            savedTheme === 'dark' ||
+            (savedTheme !== 'light' &&
+              (!window.matchMedia || !window.matchMedia('(prefers-color-scheme: light)').matches));
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+          var savedLang = localStorage.getItem('everykr_language') || 'en';
+          document.documentElement.lang = savedLang;
+          document.documentElement.dir =
+            savedLang === 'ur' || savedLang === 'ar' ? 'rtl' : 'ltr';
+        } catch (e) {}
+      })();
+    </script>
+    <script id="everykr-jsonld" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "EVERYKR",
+        "alternateName": "EVERYKR — Everything Korea, One Platform",
+        "url": "https://everykr.com",
+        "inLanguage": ["en", "bn", "ko", "ne", "ur", "hi", "ar", "zh", "ja"],
+        "description": "All-in-one digital platform for international students in South Korea: university admission, visa guides, jobs, accommodation, community, marketplace, and daily life guidance."
+      }
+    </script>
+  </head>
+  <body class="bg-[#F8FAFC] dark:bg-[#050B18] text-[#10243A] dark:text-[#DCE5F0] antialiased selection:bg-[#4BA3FF]/25 selection:text-white transition-colors">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

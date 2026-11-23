@@ -1,0 +1,231 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // =========================================================================
+    // AUTHENTICATION & ROLE-BASED ACCESS CONTROL (RBAC) HELPERS
+    // =========================================================================
+    // SECURITY ARCHITECTURE NOTE (NAMED FIRESTORE DATABASE):
+    // EVERYKR's primary Firestore database is a named database:
+    //   `ai-studio-everykreverythin-cda39542-8880-4342-b928-74dd6bd4564f`
+    // Firebase Storage Security Rules cross-service `firestore.get()` /
+    // `firestore.exists()` ONLY supports the `(default)` Firestore database.
+    //
+    // To enforce authoritative server-side isolation without weakening security:
+    //   1. Role checks rely STRICTLY on verified Firebase Auth JWT custom claims
+    //      (`admin`, `counsellor`, `viewer`, `role`). Hardcoded email fallbacks
+    //      and client-supplied status metadata are NOT trusted here.
+    //   2. Student uploads to `applications/{userId}/{applicationId}/{docType}/{fileName}`
+    //      are NOT permitted directly via the client Firebase Storage SDK.
+    //      Instead, all student uploads MUST go through the authenticated
+    //      backend endpoint (`POST /api/smart-applications/documents/authorize-upload`),
+    //      which verifies the Firebase ID token, reads `applications/{applicationId}`
+    //      from the named Firestore database, enforces ownership and authoritative
+    //      status (`draft` or `documents_missing` ONLY), validates docType/size/MIME,
+    //      and issues a short-lived single-use authorized upload channel.
+    //   3. Counsellors do NOT have global Storage read access. Assigned
+    //      counsellors (`assignedTo == request.auth.uid`) access authorized
+    //      application documents ONLY through the backend read authorization
+    //      endpoint (`POST /api/smart-applications/documents/authorize-read`),
+    //      which verifies `assignedTo` against the named Firestore database.
+    //   4. Viewers follow strict least-privilege: ZERO direct Storage access
+    //      to raw student PII files (passports, financial proofs, transcripts)
+    //      and ZERO upload/update/delete permissions.
+    // =========================================================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Verified Firebase Auth custom claims ONLY — no hardcoded email fallbacks.
+    function isAdmin() {
+      return isSignedIn() && (
+        ('admin' in request.auth.token && request.auth.token.admin == true) ||
+        ('role' in request.auth.token && request.auth.token.role == 'admin')
+      );
+    }
+
+    function isCounsellor() {
+      return isSignedIn() && (
+        ('counsellor' in request.auth.token && request.auth.token.counsellor == true) ||
+        ('role' in request.auth.token && request.auth.token.role == 'counsellor')
+      );
+    }
+
+    function isViewer() {
+      return isSignedIn() && (
+        ('viewer' in request.auth.token && request.auth.token.viewer == true) ||
+        ('role' in request.auth.token && request.auth.token.role == 'viewer')
+      );
+    }
+
+    // =========================================================================
+    // PATH & FILE VALIDATION HELPERS
+    // =========================================================================
+
+    function isSafeSegment(seg, maxLen) {
+      return seg is string &&
+        seg.size() >= 1 &&
+        seg.size() <= maxLen &&
+        seg.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    function isSafeFileName(fileName) {
+      return fileName is string &&
+        fileName.size() >= 3 &&
+        fileName.size() <= 180 &&
+        !fileName.matches('.*\\.\\..*') &&
+        !fileName.matches('.*/.*');
+    }
+
+    function isValidSmartApplicationDocument(userId, applicationId, docType, fileName) {
+      return request.resource != null &&
+        request.resource.size > 0 &&
+        request.resource.size <= 20 * 1024 * 1024 &&
+        isSafeSegment(userId, 128) &&
+        isSafeSegment(applicationId, 128) &&
+        isSafeSegment(docType, 64) &&
+        isSafeFileName(fileName) &&
+        fileName.lower().matches('.*\\.(pdf|jpg|jpeg|png|heic|heif|zip)$') &&
+        request.resource.contentType != null &&
+        request.resource.contentType.matches(
+          '^(application/pdf|image/jpeg|image/jpg|image/png|image/heic|image/heif|application/zip|application/x-zip-compressed|application/x-zip)$'
+        ) &&
+        request.resource.metadata != null &&
+        'userId' in request.resource.metadata &&
+        request.resource.metadata.userId == userId &&
+        'applicationId' in request.resource.metadata &&
+        request.resource.metadata.applicationId == applicationId &&
+        'docType' in request.resource.metadata &&
+        request.resource.metadata.docType == docType;
+    }
+
+    function isValidSimOrStudentPortalDocument(userId, recordId, fileName) {
+      return request.resource != null &&
+        request.resource.size > 0 &&
+        request.resource.size <= 10 * 1024 * 1024 &&
+        isSafeSegment(userId, 128) &&
+        isSafeSegment(recordId, 128) &&
+        isSafeFileName(fileName) &&
+        fileName.lower().matches('.*\\.(pdf|jpg|jpeg|png)$') &&
+        request.resource.contentType != null &&
+        request.resource.contentType.matches('^(application/pdf|image/jpeg|image/jpg|image/png)$') &&
+        request.resource.metadata != null &&
+        'userId' in request.resource.metadata &&
+        request.resource.metadata.userId == userId;
+    }
+
+    function isValidProfilePhoto(userId, fileName) {
+      return request.resource != null &&
+        request.resource.size > 0 &&
+        request.resource.size <= 5 * 1024 * 1024 &&
+        isSafeSegment(userId, 128) &&
+        isSafeFileName(fileName) &&
+        fileName.lower().matches('.*\\.(jpg|jpeg|png|webp)$') &&
+        request.resource.contentType != null &&
+        request.resource.contentType.matches('^(image/jpeg|image/jpg|image/png|image/webp)$');
+    }
+
+    function isValidUniversityDeadlineLogo(universitySlug, fileName) {
+      return request.resource != null &&
+        request.resource.size > 0 &&
+        request.resource.size <= 5 * 1024 * 1024 &&
+        isSafeSegment(universitySlug, 128) &&
+        isSafeFileName(fileName) &&
+        fileName.lower().matches('.*\\.(png|jpg|jpeg|webp|svg)$') &&
+        request.resource.contentType != null &&
+        request.resource.contentType.matches('^(image/png|image/jpeg|image/jpg|image/webp|image/svg\\+xml)$');
+    }
+
+    // =========================================================================
+    // 1. EVERYKR SMART UNIVERSITY APPLICATION DOCUMENTS (STRICTLY PRIVATE)
+    // Path: applications/{userId}/{applicationId}/{docType}/{fileName}
+    // =========================================================================
+    // - Get: Strictly owning student (`isOwner(userId)`) or verified-claim Admin.
+    //   * Counsellors are NOT granted global read access here; assigned
+    //     counsellors obtain short-lived scoped access via backend verification
+    //     of `assignedTo == request.auth.uid` on the named Firestore database.
+    //   * Viewers are DENIED all raw document access (least-privilege policy).
+    // - List: Admin only.
+    // - Create / Update / Delete: Admin only via client SDK.
+    //   * Students upload ONLY through backend-mediated authorization
+    //     (`/api/smart-applications/documents/authorize-upload`) which enforces
+    //     ownership and authoritative `draft` / `documents_missing` status on
+    //     the named Firestore database, preventing post-submission bypasses.
+    //   * Counsellors and Viewers have ZERO upload, update, or delete access.
+    match /applications/{userId}/{applicationId}/{docType}/{fileName} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isAdmin() &&
+        isValidSmartApplicationDocument(userId, applicationId, docType, fileName);
+      allow update: if isAdmin() &&
+        isValidSmartApplicationDocument(userId, applicationId, docType, fileName);
+      allow delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 2. SIM REGISTRATION PASSPORT & FLIGHT TICKET DOCUMENTS (STRICTLY PRIVATE)
+    // Path: sim_applications/{userId}/{applicationId}/{fileName}
+    // =========================================================================
+    match /sim_applications/{userId}/{applicationId}/{fileName} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if (isOwner(userId) || isAdmin()) &&
+        isValidSimOrStudentPortalDocument(userId, applicationId, fileName);
+      allow update: if isAdmin() &&
+        isValidSimOrStudentPortalDocument(userId, applicationId, fileName);
+      allow delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 3. STUDENT PORTAL DOCUMENTS (STRICTLY PRIVATE)
+    // Path: student_documents/{userId}/{documentId}/{fileName}
+    // =========================================================================
+    match /student_documents/{userId}/{documentId}/{fileName} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if (isOwner(userId) || isAdmin()) &&
+        isValidSimOrStudentPortalDocument(userId, documentId, fileName);
+      allow update: if isAdmin() &&
+        isValidSimOrStudentPortalDocument(userId, documentId, fileName);
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // =========================================================================
+    // 4. STUDENT PROFILE PHOTOS (STRICT OWNER + ADMIN ISOLATION)
+    // Path: profile_photos/{userId}/{fileName}
+    // =========================================================================
+    match /profile_photos/{userId}/{fileName} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create, update: if (isOwner(userId) || isAdmin()) &&
+        isValidProfilePhoto(userId, fileName);
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // =========================================================================
+    // 5. OFFICIAL UNIVERSITY ADMISSION DEADLINE LOGOS (EXPLICIT 2-SEGMENT PATH)
+    // Path: university-deadlines/{universitySlug}/{fileName}
+    // Note: No public `allow read: if true` and no recursive wildcard.
+    // =========================================================================
+    match /university-deadlines/{universitySlug}/{fileName} {
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      allow create, update: if isAdmin() &&
+        isValidUniversityDeadlineLogo(universitySlug, fileName);
+      allow delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 6. GLOBAL DEFAULT DENY — ALL OTHER PATHS BLOCKED
+    // =========================================================================
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

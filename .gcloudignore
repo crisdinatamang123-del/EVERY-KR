@@ -1,0 +1,37 @@
+# EVERYKR — Phase 13B Safe Cloud Run Source Upload Exclusions (.gcloudignore)
+# Follows gitignore(5) syntax with root-anchored paths where appropriate.
+# Reduces Cloud Run source upload package safely below the 250 MB limit
+# without deleting or modifying any project files, datasets, or media.
+
+# Dependencies (installed cleanly in Cloud Build via npm install)
+/node_modules/
+npm-debug.log*
+*.log
+
+# Local pre-built output (regenerated in Cloud Build via `npm run build`)
+/dist/
+/build/
+/coverage/
+
+# Offline historical backups & snapshots (preserved locally; not needed in Cloud Run)
+/.everykr-backup-phase1/
+/.everykr-backup-*/
+/backups/
+
+# AI Studio planning/artifact scratch storage & temporary verification files
+/.aistudio/
+/.tmp_verify_phase11.tsx
+/.tmp_verify_*
+
+# Offline maintenance & verification scripts (unreferenced at build and runtime)
+/scripts/
+
+# Local runtime state stores & local environment secrets (keep .env.example)
+/.everykr-*.json
+.env
+.env.*
+!.env.example
+
+# OS & VCS metadata
+/.git/
+.DS_Store

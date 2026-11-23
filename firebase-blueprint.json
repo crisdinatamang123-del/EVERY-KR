@@ -1,0 +1,1525 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Centralized user profile representation supporting students, general users, education agents, employers, housing providers, university partners, and administrators",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "description": "Unique Firebase Auth UID" },
+        "id": { "type": "string", "maxLength": 128 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "name": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["student", "general", "agent", "employer", "landlord", "university", "admin"] },
+        "accountType": { "type": "string", "enum": ["student", "general", "agent", "employer", "landlord", "university", "admin"] },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "avatarUrl": { "type": "string", "maxLength": 500 },
+        "authProvider": { "type": "string", "enum": ["google", "email_otp", "password"] },
+        "emailVerified": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "lastLoginAt": { "type": "string", "format": "date-time" },
+        "accountStatus": { "type": "string", "enum": ["active", "unverified", "pending_approval", "rejected", "suspended"] },
+        "phoneNumber": { "type": "string", "maxLength": 50 },
+        "countryCode": { "type": "string", "maxLength": 16 },
+        "countryOfResidence": { "type": "string", "maxLength": 80 },
+        "nationality": { "type": "string", "maxLength": 80 },
+        "currentCountry": { "type": "string", "maxLength": 80 },
+        "currentCity": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 80 },
+        "dateOfBirth": { "type": "string", "maxLength": 32 },
+        "gender": { "type": "string", "maxLength": 32 },
+        "university": { "type": "string", "maxLength": 150 },
+        "major": { "type": "string", "maxLength": 120 },
+        "studyLevel": { "type": "string", "maxLength": 100 },
+        "preferredLanguage": { "type": "string", "maxLength": 50 },
+        "visaType": { "type": "string", "maxLength": 50 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "kakaoId": { "type": "string", "maxLength": 80 },
+        "expectedGraduation": { "type": "string", "maxLength": 50 },
+        "profileCompletionPercentage": { "type": "number" },
+        "educationRecords": { "type": "array" }
+      },
+      "required": ["uid", "fullName", "email", "role", "authProvider", "emailVerified", "createdAt", "lastLoginAt", "accountStatus"]
+    },
+    "RegistrationLog": {
+      "title": "RegistrationLog",
+      "description": "Immutable registration audit record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "accountType": { "type": "string", "maxLength": 50 },
+        "countryOfResidence": { "type": "string", "maxLength": 80 },
+        "nationality": { "type": "string", "maxLength": 80 },
+        "authProvider": { "type": "string", "enum": ["google", "email_otp"] },
+        "emailVerified": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "fullName", "accountType", "authProvider", "timestamp"]
+    },
+    "DataPrivacyRequest": {
+      "title": "DataPrivacyRequest",
+      "description": "User-submitted personal data correction, passport purge, or account deletion request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "requestType": { "type": "string", "enum": ["data_correction", "passport_deletion", "account_deletion"] },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "requestedAt": { "type": "string", "format": "date-time" },
+        "processedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "requestType", "status", "requestedAt"]
+    },
+    "LoginLog": {
+      "title": "LoginLog",
+      "description": "Immutable authentication attempt log recording uid, timestamp, provider, and success/failure status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "maxLength": 50 },
+        "provider": { "type": "string", "enum": ["google", "email_otp", "password"] },
+        "status": { "type": "string", "enum": ["success", "failure"] },
+        "success": { "type": "boolean" },
+        "reason": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "provider", "status", "success", "timestamp"]
+    },
+    "AdminLog": {
+      "title": "AdminLog",
+      "description": "Immutable administrative action log recording admin UID, action, target user, and timestamp",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "adminUid": { "type": "string", "maxLength": 128 },
+        "adminEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "adminName": { "type": "string", "maxLength": 120 },
+        "action": { "type": "string", "maxLength": 100 },
+        "targetUid": { "type": "string", "maxLength": 128 },
+        "targetEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "details": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["adminUid", "action", "timestamp"]
+    },
+    "OtpVerificationMetadata": {
+      "title": "OtpVerificationMetadata",
+      "description": "Non-sensitive OTP verification metadata only. Never stores plaintext OTP codes, hashes, or passwords.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["student", "general", "agent", "employer", "landlord", "university", "admin"] },
+        "status": { "type": "string", "enum": ["pending_otp", "verified", "expired", "locked"] },
+        "emailVerified": { "type": "boolean" },
+        "attemptsUsed": { "type": "number" },
+        "maxAttempts": { "type": "number" },
+        "requestedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "verifiedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "fullName", "role", "status", "emailVerified", "attemptsUsed", "maxAttempts", "requestedAt", "expiresAt"]
+    },
+    "University": {
+      "title": "University",
+      "description": "Accredited higher education institution in South Korea",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 150 },
+        "koreanName": { "type": "string", "maxLength": 100 },
+        "city": { "type": "string", "maxLength": 50 },
+        "type": { "type": "string", "enum": ["National", "Private"] },
+        "campusImage": { "type": "string", "maxLength": 500 },
+        "rankingKR": { "type": "number" },
+        "programs": { "type": "array", "description": "Featured degree programs" },
+        "degrees": { "type": "array", "description": "Degree levels offered" },
+        "tuitionMin": { "type": "number" },
+        "tuitionMax": { "type": "number" },
+        "scholarships": { "type": "array" },
+        "englishTaughtAvailable": { "type": "boolean" },
+        "internationalOfficeUrl": { "type": "string", "maxLength": 500 },
+        "contactEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "locationAddress": { "type": "string", "maxLength": 250 },
+        "deadlinesSpring": { "type": "string", "maxLength": 100 },
+        "deadlinesFall": { "type": "string", "maxLength": 100 },
+        "verified": { "type": "boolean" },
+        "description": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["name", "koreanName", "city", "type", "verified"]
+    },
+    "Job": {
+      "title": "Job",
+      "description": "Employment and internship opportunity compliant with Korean immigration work limits",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "company": { "type": "string", "maxLength": 120 },
+        "location": { "type": "string", "maxLength": 150 },
+        "city": { "type": "string", "maxLength": 50 },
+        "salaryKRW": { "type": "string", "maxLength": 50 },
+        "jobType": { "type": "string", "enum": ["Part-time", "Full-time", "Internship", "Campus Assistant"] },
+        "category": { "type": "string", "enum": ["Restaurant & Cafe", "Office & Admin", "Translation", "Education & Tutoring", "IT & Tech", "Factory & Logistics"] },
+        "hoursPerWeek": { "type": "number" },
+        "languageRequirements": { "type": "string", "maxLength": 200 },
+        "visaRequirements": { "type": "string", "maxLength": 200 },
+        "deadline": { "type": "string", "maxLength": 50 },
+        "postedDate": { "type": "string", "maxLength": 50 },
+        "verified": { "type": "boolean" },
+        "description": { "type": "string", "maxLength": 3000 },
+        "responsibilities": { "type": "array" },
+        "employerId": { "type": "string", "maxLength": 128 },
+        "employerEmail": { "type": "string", "format": "email", "maxLength": 150 }
+      },
+      "required": ["title", "company", "city", "salaryKRW", "jobType", "employerEmail"]
+    },
+    "JobApplication": {
+      "title": "JobApplication",
+      "description": "Student submission for an open position",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "jobId": { "type": "string", "maxLength": 64 },
+        "jobTitle": { "type": "string", "maxLength": 150 },
+        "company": { "type": "string", "maxLength": 120 },
+        "applicantId": { "type": "string", "maxLength": 128 },
+        "applicantName": { "type": "string", "maxLength": 100 },
+        "applicantEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "visaStatus": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["Submitted", "Under Review", "Interview Scheduled", "Accepted", "Rejected"] },
+        "appliedDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["jobId", "applicantId", "applicantName", "applicantEmail", "status"]
+    },
+    "Accommodation": {
+      "title": "Accommodation",
+      "description": "Student housing, studio apartment, officetel, dormitory or goshiwon with strict admin approval workflow",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "propertyId": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 2500 },
+        "photos": { "type": "array" },
+        "monthlyRent": { "type": "number" },
+        "monthlyRentKRW": { "type": "number" },
+        "securityDeposit": { "type": "number" },
+        "depositKRW": { "type": "number" },
+        "maintenanceFeeKRW": { "type": "number" },
+        "city": { "type": "string", "maxLength": 50 },
+        "district": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 250 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "accommodationType": { "type": "string", "enum": ["Dormitory", "One-room", "Studio", "Shared Room", "Goshiwon", "Short-term"] },
+        "roomType": { "type": "string", "enum": ["Dormitory", "One-room", "Studio", "Shared Room", "Goshiwon", "Short-term"] },
+        "facilities": { "type": "array" },
+        "amenities": { "type": "array" },
+        "roomDetails": { "type": "string", "maxLength": 1000 },
+        "availability": { "type": "string", "enum": ["Available", "Unavailable"] },
+        "approvalStatus": { "type": "string", "enum": ["Pending", "Approved", "Rejected", "Unavailable", "Archived"] },
+        "createdBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 },
+        "approvedBy": { "type": "string", "maxLength": 128 },
+        "approvedAt": { "type": "string", "maxLength": 64 },
+        "furnished": { "type": "boolean" },
+        "availableDate": { "type": "string", "maxLength": 50 },
+        "nearUniversities": { "type": "array" },
+        "landlordType": { "type": "string", "enum": ["Direct Owner", "Certified Agent", "University Dorm"] },
+        "landlordId": { "type": "string", "maxLength": 128 },
+        "landlordPhone": { "type": "string", "maxLength": 50 },
+        "contactEmail": { "type": "string", "maxLength": 150 },
+        "verified": { "type": "boolean" }
+      },
+      "required": ["title", "city", "monthlyRentKRW", "depositKRW", "approvalStatus", "availability"]
+    },
+    "CommunityPost": {
+      "title": "CommunityPost",
+      "description": "Discussion post created by international scholars in Korea",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "authorRole": { "type": "string", "maxLength": 100 },
+        "authorNationality": { "type": "string", "maxLength": 80 },
+        "category": { "type": "string", "enum": ["General Discussion", "University Life", "Visa & Immigration", "Jobs & Careers", "Accommodation", "Korean Language", "Buy & Sell", "Daily Life"] },
+        "city": { "type": "string", "maxLength": 50 },
+        "repliesCount": { "type": "number" },
+        "likesCount": { "type": "number" },
+        "timestamp": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["title", "content", "authorId", "authorName", "category", "city"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Reply to a student community post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "content": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string", "maxLength": 50 },
+        "isVerifiedStudent": { "type": "boolean" }
+      },
+      "required": ["authorId", "authorName", "content"]
+    },
+    "MarketplaceListing": {
+      "title": "MarketplaceListing",
+      "description": "Second-hand item listed for sale or trade by a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "enum": ["Laptops & Electronics", "Mobile Phones", "Furniture", "Books & Study Materials", "Clothing", "Household Items", "Bicycles", "Other Items"] },
+        "priceKRW": { "type": "number" },
+        "condition": { "type": "string", "enum": ["Brand New", "Like New", "Good Condition", "Fair Condition"] },
+        "location": { "type": "string", "maxLength": 150 },
+        "city": { "type": "string", "maxLength": 50 },
+        "sellerId": { "type": "string", "maxLength": 128 },
+        "sellerName": { "type": "string", "maxLength": 100 },
+        "sellerContact": { "type": "string", "maxLength": 100 },
+        "images": { "type": "array" },
+        "status": { "type": "string", "enum": ["Available", "Reserved", "Sold"] },
+        "description": { "type": "string", "maxLength": 2000 },
+        "postedDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["title", "category", "priceKRW", "condition", "sellerId", "sellerContact", "status"]
+    },
+    "Article": {
+      "title": "Article",
+      "description": "Verified survival and regulatory guide for life in Korea",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Banking", "Mobile & SIM", "Healthcare", "Transportation", "Shopping", "Government"] },
+        "readTimeMinutes": { "type": "number" },
+        "summary": { "type": "string", "maxLength": 1000 },
+        "keySteps": { "type": "array" },
+        "officialWarning": { "type": "string", "maxLength": 1000 },
+        "lastUpdated": { "type": "string", "maxLength": 50 },
+        "officialSource": { "type": "string", "maxLength": 150 },
+        "sourceUrl": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["title", "category", "summary", "officialSource"]
+    },
+    "SavedItem": {
+      "title": "SavedItem",
+      "description": "User bookmarked item reference",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "itemType": { "type": "string", "enum": ["university", "job", "accommodation"] },
+        "itemId": { "type": "string", "maxLength": 64 },
+        "savedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "itemType", "itemId"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "In-app alert for user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "timestamp": { "type": "string", "maxLength": 50 },
+        "read": { "type": "boolean" },
+        "type": { "type": "string", "enum": ["job", "visa", "community", "system"] }
+      },
+      "required": ["userId", "title", "message", "read", "type"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "User submitted safety or moderation report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "reporterId": { "type": "string", "maxLength": 128 },
+        "targetType": { "type": "string", "enum": ["job", "housing", "post", "listing", "user"] },
+        "targetId": { "type": "string", "maxLength": 64 },
+        "reason": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["Pending", "Reviewed", "Dismissed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reporterId", "targetType", "targetId", "reason", "status"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Administrative actions audit log recording security, publishing, and moderation events",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "adminId": { "type": "string", "maxLength": 128 },
+        "adminName": { "type": "string", "maxLength": 100 },
+        "adminEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "actionType": { "type": "string", "maxLength": 50 },
+        "targetEntity": { "type": "string", "maxLength": 50 },
+        "targetId": { "type": "string", "maxLength": 64 },
+        "details": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["adminId", "actionType", "targetEntity", "targetId", "timestamp"]
+    },
+    "AcademyLesson": {
+      "title": "AcademyLesson",
+      "description": "Structured Hangul and 10-level Korean learning lesson unit with Bengali, Nepali, and English explanations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "slug": { "type": "string", "maxLength": 120 },
+        "order": { "type": "number" },
+        "level": { "type": "string", "maxLength": 64 },
+        "titleKo": { "type": "string", "maxLength": 150 },
+        "titleEn": { "type": "string", "maxLength": 150 },
+        "titleBn": { "type": "string", "maxLength": 150 },
+        "titleNe": { "type": "string", "maxLength": 150 },
+        "estimatedMinutes": { "type": "number" },
+        "overviewEn": { "type": "string", "maxLength": 3000 },
+        "overviewBn": { "type": "string", "maxLength": 3000 },
+        "overviewNe": { "type": "string", "maxLength": 3000 },
+        "published": { "type": "boolean" },
+        "reviewStatus": { "type": "string", "enum": ["approved", "pending_ai_review", "draft"] },
+        "letters": { "type": "array" }
+      },
+      "required": ["id", "titleKo", "titleEn", "titleBn"]
+    },
+    "AcademyVocabulary": {
+      "title": "AcademyVocabulary",
+      "description": "Korean vocabulary and essential expression item with Bengali, Nepali, and English meanings and script-native pronunciations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "topic": { "type": "string", "maxLength": 64 },
+        "categoryId": { "type": "string", "maxLength": 64 },
+        "korean": { "type": "string", "maxLength": 250 },
+        "romanization": { "type": "string", "maxLength": 250 },
+        "pronunciationBn": { "type": "string", "maxLength": 250 },
+        "pronunciationNe": { "type": "string", "maxLength": 250 },
+        "meaningEn": { "type": "string", "maxLength": 500 },
+        "meaningBn": { "type": "string", "maxLength": 500 },
+        "meaningNe": { "type": "string", "maxLength": 500 },
+        "level": { "type": "string", "maxLength": 64 },
+        "difficulty": { "type": "string", "enum": ["Beginner", "Intermediate", "Advanced"] },
+        "audioUrl": { "type": "string" },
+        "published": { "type": "boolean" },
+        "reviewStatus": { "type": "string", "enum": ["approved", "pending_ai_review", "draft"] }
+      },
+      "required": ["id", "categoryId", "korean", "meaningEn", "meaningBn"]
+    },
+    "AcademyScenario": {
+      "title": "AcademyScenario",
+      "description": "Real-life Korea conversation scenario across 22 situational domains with tri-lingual dialogues and exercises",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "domainId": { "type": "string", "maxLength": 64 },
+        "titleKo": { "type": "string", "maxLength": 200 },
+        "titleEn": { "type": "string", "maxLength": 200 },
+        "titleBn": { "type": "string", "maxLength": 200 },
+        "titleNe": { "type": "string", "maxLength": 200 },
+        "level": { "type": "string", "maxLength": 64 },
+        "dialogue": { "type": "array" },
+        "published": { "type": "boolean" },
+        "reviewStatus": { "type": "string", "enum": ["approved", "pending_ai_review", "draft"] }
+      },
+      "required": ["id", "domainId", "titleKo", "titleEn"]
+    },
+    "AcademyQuestion": {
+      "title": "AcademyQuestion",
+      "description": "Korean examination question item for MCQ, Listening, Vocabulary, and Reading",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "type": { "type": "string", "enum": ["multiple_choice", "listening", "vocabulary", "reading"] },
+        "subject": { "type": "string", "maxLength": 64 },
+        "difficulty": { "type": "string", "enum": ["Beginner", "Intermediate", "Advanced"] },
+        "promptEn": { "type": "string", "maxLength": 1000 },
+        "promptBn": { "type": "string", "maxLength": 1000 },
+        "promptNe": { "type": "string", "maxLength": 1000 },
+        "options": { "type": "array" },
+        "correctIndex": { "type": "number" },
+        "explanationEn": { "type": "string", "maxLength": 2000 },
+        "explanationBn": { "type": "string", "maxLength": 2000 },
+        "explanationNe": { "type": "string", "maxLength": 2000 },
+        "published": { "type": "boolean" }
+      },
+      "required": ["id", "type", "subject", "difficulty", "promptEn", "options", "correctIndex"]
+    },
+    "AcademyCategory": {
+      "title": "AcademyCategory",
+      "description": "Korean vocabulary and expression category",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "nameEn": { "type": "string", "maxLength": 150 },
+        "nameBn": { "type": "string", "maxLength": 150 },
+        "nameNe": { "type": "string", "maxLength": 150 },
+        "nameKo": { "type": "string", "maxLength": 150 },
+        "order": { "type": "number" }
+      },
+      "required": ["id", "nameEn", "nameBn", "nameKo"]
+    },
+    "AcademyProgress": {
+      "title": "AcademyProgress",
+      "description": "Per-user Korean Learning Academy streak, SRS schedule, bookmarked/weak vocabulary, completed lessons, and performance metrics",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "preferredLearningLang": { "type": "string", "enum": ["bn", "ne", "en"] },
+        "currentLevel": { "type": "string", "maxLength": 64 },
+        "streakDays": { "type": "number" },
+        "totalQuestionsAnswered": { "type": "number" },
+        "totalCorrectAnswers": { "type": "number" },
+        "totalIncorrectAnswers": { "type": "number" },
+        "totalPracticeMinutes": { "type": "number" },
+        "completedLessons": { "type": "array" },
+        "masteredVocabIds": { "type": "array" },
+        "bookmarkedVocabIds": { "type": "array" },
+        "weakVocabIds": { "type": "array" },
+        "completedScenarioIds": { "type": "array" },
+        "completedGrammarIds": { "type": "array" },
+        "completedListeningIds": { "type": "array" },
+        "completedReadingIds": { "type": "array" },
+        "completedSpeakingIds": { "type": "array" },
+        "completedHandwritingIds": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "streakDays"]
+    },
+    "AcademyExamResult": {
+      "title": "AcademyExamResult",
+      "description": "Submitted Korean examination score and weak area summary",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "subject": { "type": "string", "maxLength": 64 },
+        "difficulty": { "type": "string", "maxLength": 64 },
+        "totalQuestions": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "incorrectCount": { "type": "number" },
+        "scorePercent": { "type": "number" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "totalQuestions", "correctCount", "scorePercent", "completedAt"]
+    },
+    "UniversityCampus": {
+      "title": "UniversityCampus",
+      "description": "Main or secondary campus record for an approved Korean university",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "campusName": { "type": "string", "maxLength": 160 },
+        "campusNameKo": { "type": "string", "maxLength": 160 },
+        "isMainCampus": { "type": "boolean" },
+        "city": { "type": "string", "maxLength": 80 },
+        "province": { "type": "string", "maxLength": 80 },
+        "postalCode": { "type": "string", "maxLength": 20 },
+        "addressEn": { "type": "string", "maxLength": 300 },
+        "addressKo": { "type": "string", "maxLength": 300 },
+        "googleMapsUrl": { "type": "string", "maxLength": 500 },
+        "verificationStatus": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "universityId", "campusName", "city"]
+    },
+    "UniversityLogo": {
+      "title": "UniversityLogo",
+      "description": "Official verified university logo asset and provenance record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "localAssetPath": { "type": "string", "maxLength": 500 },
+        "officialSourceUrl": { "type": "string", "maxLength": 500 },
+        "verified": { "type": "boolean" },
+        "verificationStatus": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "universityId", "verified"]
+    },
+    "UniversityImage": {
+      "title": "UniversityImage",
+      "description": "Verified campus, building, library, or dormitory photograph with attribution",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "category": { "type": "string", "maxLength": 40 },
+        "caption": { "type": "string", "maxLength": 300 },
+        "localOrOfficialUrl": { "type": "string", "maxLength": 500 },
+        "sourceUrl": { "type": "string", "maxLength": 500 },
+        "attribution": { "type": "string", "maxLength": 300 },
+        "verified": { "type": "boolean" }
+      },
+      "required": ["id", "universityId", "category", "localOrOfficialUrl"]
+    },
+    "UniversityProgram": {
+      "title": "UniversityProgram",
+      "description": "Categorized academic or language program offered by an approved university",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "categoryCode": { "type": "string", "maxLength": 32 },
+        "programNameEn": { "type": "string", "maxLength": 240 },
+        "collegeOrFaculty": { "type": "string", "maxLength": 200 },
+        "degreeLevel": { "type": "string", "maxLength": 80 },
+        "languageOfInstruction": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "universityId", "categoryCode", "programNameEn"]
+    },
+    "AdmissionRequirement": {
+      "title": "AdmissionRequirement",
+      "description": "Degree-level eligibility and academic admission requirement record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "degreeLevel": { "type": "string", "maxLength": 64 },
+        "academicQualification": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "universityId", "degreeLevel"]
+    },
+    "LanguageRequirement": {
+      "title": "LanguageRequirement",
+      "description": "TOPIK and English score requirements by degree level",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "degreeLevel": { "type": "string", "maxLength": 64 },
+        "koreanTrackTopik": { "type": "string", "maxLength": 500 },
+        "englishTrackScore": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "universityId", "degreeLevel"]
+    },
+    "TuitionFee": {
+      "title": "TuitionFee",
+      "description": "KRW tuition, dormitory, and insurance fee schedule per track",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "departmentTrackLabel": { "type": "string", "maxLength": 200 },
+        "currency": { "type": "string", "maxLength": 10 },
+        "academicYear": { "type": "string", "maxLength": 80 }
+      },
+      "required": ["id", "universityId", "departmentTrackLabel", "currency"]
+    },
+    "ScholarshipRecord": {
+      "title": "ScholarshipRecord",
+      "description": "International freshman, TOPIK, GPA, lab, or GKS scholarship record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "scholarshipType": { "type": "string", "maxLength": 80 },
+        "scholarshipName": { "type": "string", "maxLength": 240 },
+        "benefitCoverage": { "type": "string", "maxLength": 600 }
+      },
+      "required": ["id", "universityId", "scholarshipName"]
+    },
+    "AdmissionDeadline": {
+      "title": "AdmissionDeadline",
+      "description": "Structured multi-round university admission schedule separated by intake year (2026 vs 2027)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "intakeYear": { "type": "number" },
+        "intakeSemester": { "type": "string", "maxLength": 64 },
+        "intakeLabel": { "type": "string", "maxLength": 120 },
+        "degreeLevel": { "type": "string", "maxLength": 40 },
+        "programCategory": { "type": "string", "maxLength": 40 },
+        "applicationRound": { "type": "string", "maxLength": 40 },
+        "roundActiveStatus": { "type": "string", "maxLength": 64 },
+        "isApproximate": { "type": "boolean" },
+        "flaggedForManualVerification": { "type": "boolean" },
+        "onlineApplicationRaw": { "type": "string", "maxLength": 300 },
+        "bangladeshTimeDeadline": { "type": "string", "maxLength": 200 },
+        "dhlDeadlineUniversity": { "type": "string", "maxLength": 200 },
+        "dhlDeadlineBangladeshOffice": { "type": "string", "maxLength": 200 },
+        "interviewDate": { "type": "string", "maxLength": 200 },
+        "admissionResultDate": { "type": "string", "maxLength": 200 },
+        "paymentDeadline": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["id", "universityId", "intakeYear", "degreeLevel", "applicationRound"]
+    },
+    "ApplicationDocument": {
+      "title": "ApplicationDocument",
+      "description": "Required application, Apostille/consular, and financial proof document checklist item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "documentName": { "type": "string", "maxLength": 240 },
+        "requirementType": { "type": "string", "maxLength": 40 },
+        "apostilleOrConsularRequired": { "type": "boolean" }
+      },
+      "required": ["id", "universityId", "documentName"]
+    },
+    "InternationalStudentService": {
+      "title": "InternationalStudentService",
+      "description": "University COA issuance, D-2/D-4 visa distinction, orientation, and campus support services",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "d2VisaAvailable": { "type": "string", "maxLength": 200 },
+        "d4VisaAvailable": { "type": "string", "maxLength": 200 },
+        "certificateOfAdmissionProcess": { "type": "string", "maxLength": 1500 }
+      },
+      "required": ["id", "universityId"]
+    },
+    "UniversityContact": {
+      "title": "UniversityContact",
+      "description": "Switchboard and Office of International Affairs contact directory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "switchboardPhone": { "type": "string", "maxLength": 80 },
+        "internationalOfficePhone": { "type": "string", "maxLength": 80 },
+        "internationalOfficeEmail": { "type": "string", "maxLength": 160 }
+      },
+      "required": ["id", "universityId"]
+    },
+    "UniversitySource": {
+      "title": "UniversitySource",
+      "description": "Authoritative source URL and verification date for university data",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "sourceTitle": { "type": "string", "maxLength": 240 },
+        "sourceUrl": { "type": "string", "maxLength": 500 },
+        "checkedDate": { "type": "string", "maxLength": 40 }
+      },
+      "required": ["id", "universityId", "sourceTitle", "sourceUrl"]
+    },
+    "UniversityVerificationLog": {
+      "title": "UniversityVerificationLog",
+      "description": "Immutable verification audit log for university data updates",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "actionType": { "type": "string", "maxLength": 80 },
+        "verifiedBy": { "type": "string", "maxLength": 160 },
+        "timestamp": { "type": "string", "maxLength": 64 },
+        "summary": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "universityId", "actionType", "timestamp"]
+    },
+    "SimApplication": {
+      "title": "SimApplication",
+      "description": "Free Korean SIM Card Registration and Arrival Information Portal submission with strict privacy consent and document protection",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "applicationId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "universityName": { "type": "string", "maxLength": 200 },
+        "whatsappNumber": { "type": "string", "maxLength": 40 },
+        "whatsappCountryCode": { "type": "string", "maxLength": 16 },
+        "whatsappLocalNumber": { "type": "string", "maxLength": 32 },
+        "arrivalDate": { "type": "string", "maxLength": 30 },
+        "arrivalTime": { "type": "string", "maxLength": 20 },
+        "flightNumber": { "type": "string", "maxLength": 40 },
+        "arrivalAirport": {
+          "type": "string",
+          "enum": [
+            "Incheon International Airport (ICN)",
+            "Gimhae International Airport (PUS)",
+            "Gimpo International Airport (GMP)",
+            "Jeju International Airport (CJU)",
+            "Daegu International Airport (TAE)",
+            "Cheongju International Airport (CJJ)",
+            "Other"
+          ]
+        },
+        "passportDocumentURL": { "type": "string" },
+        "passportFileName": { "type": "string", "maxLength": 200 },
+        "passportMimeType": { "type": "string", "maxLength": 64 },
+        "passportFileSize": { "type": "number" },
+        "passportStoragePath": { "type": "string", "maxLength": 300 },
+        "flightTicketDocumentURL": { "type": "string" },
+        "flightTicketFileName": { "type": "string", "maxLength": 200 },
+        "flightTicketMimeType": { "type": "string", "maxLength": 64 },
+        "flightTicketFileSize": { "type": "number" },
+        "flightTicketStoragePath": { "type": "string", "maxLength": 300 },
+        "consentAccepted": { "type": "boolean" },
+        "consentVersion": { "type": "string", "maxLength": 64 },
+        "consentText": { "type": "string", "maxLength": 2000 },
+        "consentTimestamp": { "type": "string", "format": "date-time" },
+        "submissionTimestamp": { "type": "string", "format": "date-time" },
+        "applicationStatus": {
+          "type": "string",
+          "enum": [
+            "Pending",
+            "Submitted",
+            "Under Review",
+            "Contacted",
+            "SIM Arranged",
+            "Completed",
+            "Rejected"
+          ]
+        }
+      },
+      "required": [
+        "applicationId",
+        "userId",
+        "fullName",
+        "universityName",
+        "whatsappNumber",
+        "arrivalDate",
+        "arrivalTime",
+        "flightNumber",
+        "arrivalAirport",
+        "passportDocumentURL",
+        "flightTicketDocumentURL",
+        "consentAccepted",
+        "consentVersion",
+        "consentTimestamp",
+        "submissionTimestamp",
+        "applicationStatus"
+      ]
+    },
+    "StudentDocument": {
+      "title": "StudentDocument",
+      "description": "Uploaded student verification document (Passport, Academic Certificates, Academic Transcripts, English Proficiency, TOPIK, or Supporting Documents)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "documentId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 150 },
+        "studentEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "studentCountry": { "type": "string", "maxLength": 100 },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Passport",
+            "Academic Certificates",
+            "Academic Transcripts",
+            "English Proficiency Certificate",
+            "TOPIK Certificate",
+            "Other Supporting Documents"
+          ]
+        },
+        "fileName": { "type": "string", "maxLength": 250 },
+        "mimeType": { "type": "string", "maxLength": 80 },
+        "fileSize": { "type": "number" },
+        "storagePath": { "type": "string", "maxLength": 400 },
+        "downloadUrl": { "type": "string" },
+        "uploadStatus": {
+          "type": "string",
+          "enum": ["Uploaded", "Missing", "Replacement Requested"]
+        },
+        "verificationStatus": {
+          "type": "string",
+          "enum": ["Pending Verification", "Verified", "Rejected", "Replacement Requested"]
+        },
+        "verificationNotes": { "type": "string", "maxLength": 1000 },
+        "uploadedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "verifiedAt": { "type": "string", "format": "date-time" },
+        "verifiedBy": { "type": "string", "maxLength": 150 }
+      },
+      "required": [
+        "documentId",
+        "userId",
+        "studentName",
+        "studentEmail",
+        "category",
+        "fileName",
+        "mimeType",
+        "uploadStatus",
+        "verificationStatus",
+        "uploadedAt"
+      ]
+    },
+    "UniversityApplication": {
+      "title": "UniversityApplication",
+      "description": "Student Korean university admission application with auto-populated academic profile and 9-stage status workflow",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "applicationId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 150 },
+        "studentEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "whatsappNumber": { "type": "string", "maxLength": 50 },
+        "nationality": { "type": "string", "maxLength": 100 },
+        "currentCountry": { "type": "string", "maxLength": 100 },
+        "highestEducationLevel": { "type": "string", "maxLength": 120 },
+        "previousInstitutionName": { "type": "string", "maxLength": 200 },
+        "academicGpa": { "type": "string", "maxLength": 64 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "universityName": { "type": "string", "maxLength": 200 },
+        "degreeLevel": { "type": "string", "maxLength": 80 },
+        "programName": { "type": "string", "maxLength": 200 },
+        "intendedIntake": { "type": "string", "maxLength": 100 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Draft",
+            "Submitted",
+            "Under Review",
+            "Documents Required",
+            "Processing",
+            "Accepted",
+            "Rejected",
+            "Completed",
+            "Withdrawn"
+          ]
+        },
+        "adminNotes": { "type": "string", "maxLength": 2000 },
+        "documentRequestMessage": { "type": "string", "maxLength": 1000 },
+        "assignedStaffId": { "type": "string", "maxLength": 128 },
+        "assignedStaffName": { "type": "string", "maxLength": 150 },
+        "statusHistory": { "type": "array" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "applicationId",
+        "userId",
+        "studentName",
+        "studentEmail",
+        "universityId",
+        "universityName",
+        "degreeLevel",
+        "programName",
+        "intendedIntake",
+        "status",
+        "submittedAt"
+      ]
+    },
+    "StaffMember": {
+      "title": "StaffMember",
+      "description": "Authorized platform staff account with role-based access control permissions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "staffRole": {
+          "type": "string",
+          "enum": [
+            "Super Admin",
+            "Admin",
+            "Admission Manager",
+            "Document Verification Staff",
+            "Support Staff"
+          ]
+        },
+        "permissions": { "type": "array" },
+        "status": { "type": "string", "enum": ["Active", "Inactive"] },
+        "assignedApplicationsCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email", "staffRole", "status"]
+    },
+    "AdminNotification": {
+      "title": "AdminNotification",
+      "description": "Real-time administrative alert for new student registrations, applications, documents, and SIM requests",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "type": {
+          "type": "string",
+          "enum": [
+            "new_registration",
+            "new_application",
+            "new_document",
+            "new_sim_application",
+            "pending_review"
+          ]
+        },
+        "title": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "relatedRecordId": { "type": "string", "maxLength": 128 },
+        "studentUid": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 150 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["id", "type", "title", "message", "timestamp", "read"]
+    },
+    "CmsAnnouncement": {
+      "title": "CmsAnnouncement",
+      "description": "Platform announcement, homepage banner, or student service update managed via CMS",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 80 },
+        "summary": { "type": "string", "maxLength": 1000 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "status": { "type": "string", "enum": ["Published", "Draft", "Archived"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "category", "status"]
+    },
+    "ContactSubmission": {
+      "title": "ContactSubmission",
+      "description": "Visitor or authenticated user Contact Us inquiry connected to the Admin Portal Contact Inbox",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "submissionId": { "type": "string", "maxLength": 128 },
+        "ticketId": { "type": "string", "maxLength": 64 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "name": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 254 },
+        "category": { "type": "string", "maxLength": 120 },
+        "subject": { "type": "string", "maxLength": 250 },
+        "message": { "type": "string", "maxLength": 5000 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "isAuthenticatedUser": { "type": "boolean" },
+        "userLanguage": { "type": "string", "maxLength": 16 },
+        "status": {
+          "type": "string",
+          "enum": ["New", "Read", "In Progress", "Resolved", "Closed"]
+        },
+        "unread": { "type": "boolean" },
+        "archived": { "type": "boolean" },
+        "assignedStaffId": { "type": "string", "maxLength": 128 },
+        "assignedStaffName": { "type": "string", "maxLength": 150 },
+        "assignedStaffEmail": { "type": "string", "maxLength": 254 },
+        "internalNotes": { "type": "array", "items": { "type": "object" } },
+        "replies": { "type": "array", "items": { "type": "object" } },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "submissionId",
+        "ticketId",
+        "fullName",
+        "email",
+        "category",
+        "subject",
+        "message",
+        "status",
+        "submittedAt"
+      ]
+    },
+    "DeveloperProfileSetting": {
+      "title": "DeveloperProfileSetting",
+      "description": "Public Developer Profile Showcase and Site Settings configuration stored in site_settings/developer_profile",
+      "type": "object",
+      "properties": {
+        "developerName": { "type": "string", "maxLength": 60 },
+        "name": { "type": "string", "maxLength": 60 },
+        "role": { "type": "string", "maxLength": 80 },
+        "shortBio": { "type": "string", "maxLength": 320 },
+        "detailedBio": { "type": "string", "maxLength": 1200 },
+        "projectTitle": { "type": "string", "maxLength": 120 },
+        "projectContribution": { "type": "string", "maxLength": 600 },
+        "biography": { "type": "object" },
+        "location": { "type": "string", "maxLength": 100 },
+        "profileImagePath": { "type": "string", "maxLength": 300 },
+        "profileImageUrl": { "type": "string", "maxLength": 1000 },
+        "profileImageAlt": { "type": "string", "maxLength": 160 },
+        "imageCrop": { "type": "object" },
+        "socialLinks": { "type": "object" },
+        "displaySettings": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string", "maxLength": 128 },
+        "updatedByName": { "type": "string", "maxLength": 120 }
+      },
+      "required": ["developerName", "role", "updatedAt"]
+    },
+    "FlightPriceAlert": {
+      "title": "FlightPriceAlert",
+      "description": "User-configured flight route price alert for monitoring verified live airfares",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 80 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "origin": { "type": "string", "maxLength": 10 },
+        "originCity": { "type": "string", "maxLength": 100 },
+        "destination": { "type": "string", "maxLength": 10 },
+        "destinationCity": { "type": "string", "maxLength": 100 },
+        "departureDate": { "type": "string", "maxLength": 30 },
+        "returnDate": { "type": "string", "maxLength": 30 },
+        "tripType": { "type": "string", "enum": ["one-way", "round-trip"] },
+        "targetPrice": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "cabinClass": { "type": "string", "enum": ["Economy", "Premium Economy", "Business", "First Class"] },
+        "enabled": { "type": "boolean" },
+        "lastCheckedAt": { "type": ["string", "null"] },
+        "lastVerifiedLowestPrice": { "type": ["number", "null"] },
+        "alertTriggered": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "origin", "destination", "departureDate", "targetPrice", "currency", "enabled", "createdAt"]
+    },
+    "UniversityAdmissionDeadline": {
+      "title": "UniversityAdmissionDeadline",
+      "description": "Homepage University Admission Deadline Carousel record with official Firebase Storage logo metadata and KST deadline",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 2, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "universityId": { "type": "string", "minLength": 2, "maxLength": 128 },
+        "universityName": { "type": "string", "minLength": 2, "maxLength": 160 },
+        "logoStoragePath": { "type": "string", "minLength": 3, "maxLength": 500 },
+        "logoDownloadUrl": { "type": "string", "minLength": 5, "maxLength": 2048 },
+        "logoFallbackDataUrl": { "type": "string", "minLength": 16, "maxLength": 250000 },
+        "logoFileName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "logoMimeType": { "type": "string", "enum": ["image/png", "image/jpeg", "image/webp", "image/svg+xml"] },
+        "logoFileSize": { "type": "number" },
+        "admissionIntake": { "type": "string", "enum": ["Spring", "Fall", "Other"] },
+        "intakeLabel": { "type": "string", "maxLength": 80 },
+        "applicationDeadline": { "type": "string", "minLength": 10, "maxLength": 10, "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "deadlineTimestampMs": { "type": "number" },
+        "publicationStatus": { "type": "string", "enum": ["published", "unpublished"] },
+        "published": { "type": "boolean" },
+        "displayOrder": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time", "minLength": 10, "maxLength": 64 },
+        "updatedAt": { "type": "string", "format": "date-time", "minLength": 10, "maxLength": 64 },
+        "createdByUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdByEmail": { "type": "string", "minLength": 3, "maxLength": 254 },
+        "updatedByUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "updatedByEmail": { "type": "string", "minLength": 3, "maxLength": 254 }
+      },
+      "required": [
+        "id",
+        "universityId",
+        "universityName",
+        "logoStoragePath",
+        "logoDownloadUrl",
+        "logoFileName",
+        "logoMimeType",
+        "logoFileSize",
+        "admissionIntake",
+        "applicationDeadline",
+        "deadlineTimestampMs",
+        "publicationStatus",
+        "published",
+        "displayOrder",
+        "createdAt",
+        "updatedAt",
+        "createdByUid",
+        "createdByEmail",
+        "updatedByUid",
+        "updatedByEmail"
+      ]
+    },
+    "TransportApiProviderMetadata": {
+      "title": "TransportApiProviderMetadata",
+      "description": "Non-secret Transport API provider configuration metadata across Flight, KTX, and Bus categories. Raw API keys and secrets are NEVER stored in Firestore.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120 },
+        "transportType": { "type": "string", "enum": ["flight", "ktx", "bus"] },
+        "adapterType": { "type": "string", "maxLength": 64 },
+        "apiBaseUrl": { "type": "string", "maxLength": 500 },
+        "searchEndpoint": { "type": "string", "maxLength": 300 },
+        "authType": { "type": "string", "maxLength": 64 },
+        "environment": { "type": "string", "enum": ["sandbox", "production"] },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "priority": { "type": "number" },
+        "timeoutMs": { "type": "number" },
+        "rateLimitPerMinute": { "type": "number" },
+        "defaultCurrency": { "type": "string", "maxLength": 10 },
+        "redirectUrl": { "type": "string", "maxLength": 500 },
+        "connectionHealth": { "type": "string", "enum": ["healthy", "degraded", "error", "untested", "unconfigured"] },
+        "maskedApiKey": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string", "maxLength": 160 }
+      },
+      "required": ["id", "name", "transportType", "apiBaseUrl", "environment", "status", "priority", "updatedAt"]
+    },
+    "TransportApiAuditLog": {
+      "title": "TransportApiAuditLog",
+      "description": "Immutable administrative audit log recording every Transport API configuration change, enable/disable toggle, credential rotation, and connection test.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "adminUid": { "type": "string", "maxLength": 128 },
+        "adminEmail": { "type": "string", "format": "email", "maxLength": 160 },
+        "adminName": { "type": "string", "maxLength": 120 },
+        "action": { "type": "string", "maxLength": 64 },
+        "transportType": { "type": "string", "enum": ["flight", "ktx", "bus"] },
+        "providerId": { "type": "string", "maxLength": 128 },
+        "providerName": { "type": "string", "maxLength": 120 },
+        "summary": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "timestamp", "adminUid", "action", "transportType", "providerId", "summary"]
+    },
+    "SmartApplication": {
+      "title": "SmartApplication",
+      "description": "Student university admission application submitted via the EVERYKR Smart Application System with AI auto-fill verification, document checklist, consent tracking, and counsellor workflow.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "universityId": { "type": "string", "maxLength": 128 },
+        "universityName": { "type": "string", "maxLength": 200 },
+        "intake": { "type": "string", "maxLength": 120 },
+        "degreeLevel": { "type": "string", "maxLength": 80 },
+        "round": { "type": "string", "maxLength": 80 },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "submitted",
+            "under_review",
+            "documents_missing",
+            "sent_to_university",
+            "interview",
+            "admitted",
+            "rejected",
+            "visa_processing",
+            "completed",
+            "withdrawn"
+          ]
+        },
+        "personal": { "type": "object" },
+        "education": { "type": "object" },
+        "language": { "type": "object" },
+        "program": { "type": "object" },
+        "finance": { "type": "object" },
+        "documents": { "type": "object" },
+        "aiFilledFields": { "type": "array", "items": { "type": "string" } },
+        "aiCheckWarningFields": { "type": "array", "items": { "type": "string" } },
+        "verifiedFields": { "type": "array", "items": { "type": "string" } },
+        "aiPassportSnapshot": { "type": "object" },
+        "requestedDocuments": { "type": "array", "items": { "type": "object" } },
+        "requestedDocumentsMessage": { "type": "string", "maxLength": 2000 },
+        "consent": { "type": "object" },
+        "passportNumberNormalized": { "type": "string", "maxLength": 64 },
+        "duplicatePassportFlag": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "assignedTo": { "type": "string", "maxLength": 128 },
+        "assignedToName": { "type": "string", "maxLength": 160 },
+        "assignedToEmail": { "type": "string", "maxLength": 254 },
+        "notes": { "type": "array", "items": { "type": "object" } }
+      },
+      "required": ["id", "userId", "universityId", "universityName", "status", "createdAt", "updatedAt"]
+    },
+    "ApplicationHistoryEvent": {
+      "title": "ApplicationHistoryEvent",
+      "description": "Immutable timeline event recording an application status transition and optional student message.",
+      "type": "object",
+      "properties": {
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "actorName": { "type": "string", "maxLength": 160 },
+        "actorEmail": { "type": "string", "format": "email" },
+        "actorRole": { "type": "string", "enum": ["student", "admin", "counsellor", "system"] },
+        "eventType": { "type": "string", "maxLength": 64 },
+        "assignedToName": { "type": "string", "maxLength": 160 },
+        "when": { "type": "string", "format": "date-time" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "message": { "type": "string", "maxLength": 2000 },
+        "requestedDocuments": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["actorUid", "when", "to"]
+    },
+    "ApplicationDocumentAccessLog": {
+      "title": "ApplicationDocumentAccessLog",
+      "description": "Immutable audit log recording every time an admin, counsellor, or viewer previews, downloads, or exports a student application document.",
+      "type": "object",
+      "properties": {
+        "applicationId": { "type": "string", "maxLength": 128 },
+        "docType": { "type": "string", "maxLength": 80 },
+        "fileName": { "type": "string", "maxLength": 220 },
+        "storagePath": { "type": "string", "maxLength": 500 },
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "actorName": { "type": "string", "maxLength": 160 },
+        "actorEmail": { "type": "string", "format": "email" },
+        "actorRole": { "type": "string", "maxLength": 40 },
+        "action": {
+          "type": "string",
+          "enum": ["preview", "download", "zip_export", "pdf_export", "csv_export", "xlsx_export"]
+        },
+        "accessedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["applicationId", "docType", "actorUid", "action", "accessedAt"]
+    },
+    "UserApplicationProfile": {
+      "title": "UserApplicationProfile",
+      "description": "Reusable student personal, education, and language profile stored per user for pre-filling subsequent university applications.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "personal": { "type": "object" },
+        "education": { "type": "object" },
+        "language": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Centralized user profile indexed by unique Firebase Auth UID"
+    },
+    "/registration_logs/{logId}": {
+      "schema": { "$ref": "#/entities/RegistrationLog" },
+      "description": "Registration audit trail recording accountType, country, nationality, and verification status"
+    },
+    "/login_logs/{logId}": {
+      "schema": { "$ref": "#/entities/LoginLog" },
+      "description": "Authentication attempt audit trail (uid, login timestamp, provider, success/failure)"
+    },
+    "/admin_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AdminLog" },
+      "description": "Administrative user management action log (admin UID, action, timestamp)"
+    },
+    "/admin_activity_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AdminLog" },
+      "description": "Administrative activity audit log including agent approvals and sensitive passport reveals"
+    },
+    "/otp_verifications/{verificationId}": {
+      "schema": { "$ref": "#/entities/OtpVerificationMetadata" },
+      "description": "Non-sensitive OTP verification metadata only (never stores plaintext OTP)"
+    },
+    "/data_privacy_requests/{requestId}": {
+      "schema": { "$ref": "#/entities/DataPrivacyRequest" },
+      "description": "GDPR / Korean PIPA user data correction, passport purge, and account deletion requests"
+    },
+    "/universities/{universityId}": {
+      "schema": { "$ref": "#/entities/University" },
+      "description": "Verified universities in South Korea"
+    },
+    "/jobs/{jobId}": {
+      "schema": { "$ref": "#/entities/Job" },
+      "description": "Student job and internship listings"
+    },
+    "/job_applications/{applicationId}": {
+      "schema": { "$ref": "#/entities/JobApplication" },
+      "description": "Student job applications submitted to employers"
+    },
+    "/accommodations/{accommodationId}": {
+      "schema": { "$ref": "#/entities/Accommodation" },
+      "description": "Student housing and rental listings"
+    },
+    "/community_posts/{postId}": {
+      "schema": { "$ref": "#/entities/CommunityPost" },
+      "description": "Student community discussion threads"
+    },
+    "/community_posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/Comment" },
+      "description": "Replies to student community discussions"
+    },
+    "/marketplace_listings/{listingId}": {
+      "schema": { "$ref": "#/entities/MarketplaceListing" },
+      "description": "Student-to-student second-hand marketplace listings"
+    },
+    "/articles/{articleId}": {
+      "schema": { "$ref": "#/entities/Article" },
+      "description": "Daily life survival articles and regulatory guides"
+    },
+    "/users/{userId}/saved_items/{savedItemId}": {
+      "schema": { "$ref": "#/entities/SavedItem" },
+      "description": "Saved items bookmarked by user"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "Private in-app alerts and application updates"
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/Report" },
+      "description": "User moderation and safety incident reports"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Administrative audit trail logging all management actions"
+    },
+    "/academy_lessons/{lessonId}": {
+      "schema": { "$ref": "#/entities/AcademyLesson" },
+      "description": "Structured Hangul and Korean learning lessons"
+    },
+    "/academy_vocabulary/{vocabId}": {
+      "schema": { "$ref": "#/entities/AcademyVocabulary" },
+      "description": "Korean vocabulary and essential expressions with Bengali and English meanings"
+    },
+    "/academy_questions/{questionId}": {
+      "schema": { "$ref": "#/entities/AcademyQuestion" },
+      "description": "Korean examination questions"
+    },
+    "/academy_categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/AcademyCategory" },
+      "description": "Korean vocabulary and expression categories"
+    },
+    "/academy_scenarios/{scenarioId}": {
+      "schema": { "$ref": "#/entities/AcademyScenario" },
+      "description": "Real-life Korea conversation scenarios across 22 situational domains"
+    },
+    "/academy_progress/{userId}": {
+      "schema": { "$ref": "#/entities/AcademyProgress" },
+      "description": "Per-user Korean Learning Academy progress and streaks"
+    },
+    "/academy_exam_results/{resultId}": {
+      "schema": { "$ref": "#/entities/AcademyExamResult" },
+      "description": "User Korean examination submission records"
+    },
+    "/academy_question_history/{userId}": {
+      "schema": { "$ref": "#/entities/AcademyProgress" },
+      "description": "Per-user randomized exam question exposure history to prioritize unseen questions"
+    },
+    "/academy_recommendations/{userId}": {
+      "schema": { "$ref": "#/entities/AcademyProgress" },
+      "description": "Per-user adaptive Korean study recommendations"
+    },
+    "/university_campuses/{campusId}": {
+      "schema": { "$ref": "#/entities/UniversityCampus" },
+      "description": "Relational campuses table for the 25 approved Korean universities"
+    },
+    "/university_logos/{logoId}": {
+      "schema": { "$ref": "#/entities/UniversityLogo" },
+      "description": "Relational official university logos table"
+    },
+    "/university_images/{imageId}": {
+      "schema": { "$ref": "#/entities/UniversityImage" },
+      "description": "Relational verified university campus and facility photographs table"
+    },
+    "/university_programs/{programId}": {
+      "schema": { "$ref": "#/entities/UniversityProgram" },
+      "description": "Relational categorized academic and language programs table"
+    },
+    "/admission_requirements/{requirementId}": {
+      "schema": { "$ref": "#/entities/AdmissionRequirement" },
+      "description": "Relational degree-level admission eligibility requirements table"
+    },
+    "/language_requirements/{langReqId}": {
+      "schema": { "$ref": "#/entities/LanguageRequirement" },
+      "description": "Relational TOPIK and English language proficiency requirements table"
+    },
+    "/tuition_fees/{tuitionId}": {
+      "schema": { "$ref": "#/entities/TuitionFee" },
+      "description": "Relational KRW tuition and dormitory fees table"
+    },
+    "/scholarships/{scholarshipId}": {
+      "schema": { "$ref": "#/entities/ScholarshipRecord" },
+      "description": "Relational international student scholarships table"
+    },
+    "/admission_deadlines/{deadlineId}": {
+      "schema": { "$ref": "#/entities/AdmissionDeadline" },
+      "description": "Relational multi-round university admission deadlines separated by intake year"
+    },
+    "/application_documents/{docItemId}": {
+      "schema": { "$ref": "#/entities/ApplicationDocument" },
+      "description": "Relational required application and Apostille documents table"
+    },
+    "/international_student_services/{serviceId}": {
+      "schema": { "$ref": "#/entities/InternationalStudentService" },
+      "description": "Relational international student support and COA/visa guidance table"
+    },
+    "/university_contacts/{contactId}": {
+      "schema": { "$ref": "#/entities/UniversityContact" },
+      "description": "Relational university switchboard and OIA contacts table"
+    },
+    "/university_sources/{sourceId}": {
+      "schema": { "$ref": "#/entities/UniversitySource" },
+      "description": "Relational authoritative source URLs and verification dates table"
+    },
+    "/university_verification_logs/{vlogId}": {
+      "schema": { "$ref": "#/entities/UniversityVerificationLog" },
+      "description": "Relational university verification history logs table"
+    },
+    "/sim_applications/{applicationId}": {
+      "schema": { "$ref": "#/entities/SimApplication" },
+      "description": "Free Korean SIM Card Registration and Arrival Information Portal applications"
+    },
+    "/student_documents/{documentId}": {
+      "schema": { "$ref": "#/entities/StudentDocument" },
+      "description": "Uploaded student verification documents isolated by student UID and authorized administrators"
+    },
+    "/university_applications/{applicationId}": {
+      "schema": { "$ref": "#/entities/UniversityApplication" },
+      "description": "Student Korean university admission applications with strict status protection"
+    },
+    "/staff_members/{staffId}": {
+      "schema": { "$ref": "#/entities/StaffMember" },
+      "description": "Platform staff accounts and role-based access permissions"
+    },
+    "/admin_notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/AdminNotification" },
+      "description": "Administrative notifications for platform events"
+    },
+    "/cms_announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/CmsAnnouncement" },
+      "description": "CMS announcements, banners, and student service updates"
+    },
+    "/contact_submissions/{submissionId}": {
+      "schema": { "$ref": "#/entities/ContactSubmission" },
+      "description": "Contact Us inquiries submitted by guests and signed-in users, managed by authorized administrators in the Admin Contact Inbox"
+    },
+    "/site_settings/{settingId}": {
+      "schema": { "$ref": "#/entities/DeveloperProfileSetting" },
+      "description": "Published public Developer Profile Showcase and global site settings (site_settings/developer_profile)"
+    },
+    "/flight_price_alerts/{alertId}": {
+      "schema": { "$ref": "#/entities/FlightPriceAlert" },
+      "description": "User flight route price alerts isolated per authenticated user UID"
+    },
+    "/university_admission_deadlines/{deadlineId}": {
+      "schema": { "$ref": "#/entities/UniversityAdmissionDeadline" },
+      "description": "Homepage University Admission Deadline Carousel records managed via Homepage CMS"
+    },
+    "/transport_api_providers/{providerId}": {
+      "schema": { "$ref": "#/entities/TransportApiProviderMetadata" },
+      "description": "Admin-managed non-secret Transport API provider registry metadata (Flight, KTX, Bus); secrets remain encrypted server-side only"
+    },
+    "/transport_api_audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/TransportApiAuditLog" },
+      "description": "Immutable audit trail for Transport API Management configuration and credential rotation events"
+    },
+    "/users/{userId}/applicationProfile/{profileId}": {
+      "schema": { "$ref": "#/entities/UserApplicationProfile" },
+      "description": "Reusable personal, education, and language profile saved per user to pre-fill future university applications"
+    },
+    "/applications/{applicationId}": {
+      "schema": { "$ref": "#/entities/SmartApplication" },
+      "description": "EVERYKR Smart University Applications with strict owner draft/documents_missing editing and custom-claim RBAC"
+    },
+    "/applications/{applicationId}/history/{eventId}": {
+      "schema": { "$ref": "#/entities/ApplicationHistoryEvent" },
+      "description": "Immutable status transition timeline for a Smart Application"
+    },
+    "/applications/{applicationId}/documentAccessLog/{logId}": {
+      "schema": { "$ref": "#/entities/ApplicationDocumentAccessLog" },
+      "description": "Immutable access audit log for every admin/counsellor/viewer document view or export"
+    }
+  }
+}

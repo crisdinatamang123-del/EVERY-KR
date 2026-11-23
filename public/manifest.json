@@ -1,0 +1,25 @@
+{
+  "name": "EveryKR",
+  "short_name": "EveryKR",
+  "description": "EveryKR – Official South Korea International Student & Life Platform",
+  "start_url": "/",
+  "scope": "/",
+  "id": "https://everykr.com/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#10243A",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/everykr-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

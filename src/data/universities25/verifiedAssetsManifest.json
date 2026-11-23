@@ -1,0 +1,949 @@
+{
+  "kyungsung-university": {
+    "id": "kyungsung-university",
+    "name": "Kyungsung University",
+    "logo": {
+      "localPath": "/assets/university-logos/kyungsung-university.svg",
+      "sourceUrl": "https://kscms.ks.ac.kr/resources/_Img/Common/main_logo.svg",
+      "sourcePageUrl": "https://kscms.ks.ac.kr/kor/Main.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/kyungsung-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Kyungsung Univ by Ficell 003",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Kyungsung_Univ_by_Ficell_003.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Kyungsung_Univ_by_Ficell_003.jpg",
+        "attribution": "Wikimedia Commons (Kyungsung Univ by Ficell 003.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kyungsung-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Kyungsung Univ by Ficell 001",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Kyungsung_Univ_by_Ficell_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Kyungsung_Univ_by_Ficell_001.jpg",
+        "attribution": "Wikimedia Commons (Kyungsung Univ by Ficell 001.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kyungsung-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "Kyungsung Univ by Ficell 002",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Kyungsung_Univ_by_Ficell_002.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Kyungsung_Univ_by_Ficell_002.jpg",
+        "attribution": "Wikimedia Commons (Kyungsung Univ by Ficell 002.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kyungsung-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "Kyungsung Univ by Ficell 004",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Kyungsung_Univ_by_Ficell_004.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Kyungsung_Univ_by_Ficell_004.jpg",
+        "attribution": "Wikimedia Commons (Kyungsung Univ by Ficell 004.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kyungsung-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "Kyungsung Univ by Ficell 005",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/41/Kyungsung_Univ_by_Ficell_005.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Kyungsung_Univ_by_Ficell_005.jpg",
+        "attribution": "Wikimedia Commons (Kyungsung Univ by Ficell 005.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "sejong-university": {
+    "id": "sejong-university",
+    "name": "Sejong University",
+    "logo": null,
+    "photos": [
+      {
+        "localPath": "/assets/university-media/sejong-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Sejong University Campus",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Sejong_University_Campus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sejong_University_Campus.jpg",
+        "attribution": "Wikimedia Commons (Sejong University Campus.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sejong-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Sejong University Front Gate",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Sejong_University_Front_Gate.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sejong_University_Front_Gate.jpg",
+        "attribution": "Wikimedia Commons (Sejong University Front Gate.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sejong-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "2015-02-27 09.42.20 세종대학교 서울소방재난본부 업무제휴 협약 체결식",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/2015-02-27_09.42.20_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:2015-02-27_09.42.20_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg",
+        "attribution": "Wikimedia Commons (2015-02-27 09.42.20 세종대학교 서울소방재난본부 업무제휴 협약 체결식.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sejong-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "2015-02-27 09.30.00 세종대학교 서울소방재난본부 업무제휴 협약 체결식",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/83/2015-02-27_09.30.00_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:2015-02-27_09.30.00_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg",
+        "attribution": "Wikimedia Commons (2015-02-27 09.30.00 세종대학교 서울소방재난본부 업무제휴 협약 체결식.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sejong-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "2015-02-27 10.14.53 세종대학교 서울소방재난본부 업무제휴 협약 체결식",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/72/2015-02-27_10.14.53_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:2015-02-27_10.14.53_%EC%84%B8%EC%A2%85%EB%8C%80%ED%95%99%EA%B5%90_%EC%84%9C%EC%9A%B8%EC%86%8C%EB%B0%A9%EC%9E%AC%EB%82%9C%EB%B3%B8%EB%B6%80_%EC%97%85%EB%AC%B4%EC%A0%9C%ED%9C%B4_%ED%98%91%EC%95%BD_%EC%B2%B4%EA%B2%B0%EC%8B%9D.jpg",
+        "attribution": "Wikimedia Commons (2015-02-27 10.14.53 세종대학교 서울소방재난본부 업무제휴 협약 체결식.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "seojeong-university": {
+    "id": "seojeong-university",
+    "name": "Seojeong University",
+    "logo": null,
+    "photos": []
+  },
+  "silla-university": {
+    "id": "silla-university",
+    "name": "Silla University",
+    "logo": {
+      "localPath": "/assets/university-logos/silla-university.png",
+      "sourceUrl": "https://www.silla.ac.kr/ko/_Img/logo.png",
+      "sourcePageUrl": "https://www.silla.ac.kr/ko/",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/silla-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "20140731 113550-다음을 수정함",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/20140731_113550-%EB%8B%A4%EC%9D%8C%EC%9D%84_%EC%88%98%EC%A0%95%ED%95%A8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:20140731_113550-%EB%8B%A4%EC%9D%8C%EC%9D%84_%EC%88%98%EC%A0%95%ED%95%A8.jpg",
+        "attribution": "Wikimedia Commons (20140731 113550-다음을 수정함.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/silla-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "20140801 Silla Univ Baekyang",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/58/20140801_Silla_Univ_Baekyang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:20140801_Silla_Univ_Baekyang.jpg",
+        "attribution": "Wikimedia Commons (20140801 Silla Univ Baekyang.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/silla-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "20140801 Silla Univ Baekyang1",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/21/20140801_Silla_Univ_Baekyang1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:20140801_Silla_Univ_Baekyang1.jpg",
+        "attribution": "Wikimedia Commons (20140801 Silla Univ Baekyang1.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/silla-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "20141114 175313-다음을 수정함",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/20141114_175313-%EB%8B%A4%EC%9D%8C%EC%9D%84_%EC%88%98%EC%A0%95%ED%95%A8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:20141114_175313-%EB%8B%A4%EC%9D%8C%EC%9D%84_%EC%88%98%EC%A0%95%ED%95%A8.jpg",
+        "attribution": "Wikimedia Commons (20141114 175313-다음을 수정함.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "songho-university": {
+    "id": "songho-university",
+    "name": "Songho University",
+    "logo": null,
+    "photos": []
+  },
+  "sookmyung-womens-university": {
+    "id": "sookmyung-womens-university",
+    "name": "Sookmyung Women's University",
+    "logo": null,
+    "photos": [
+      {
+        "localPath": "/assets/university-media/sookmyung-womens-university-campus-1.jpg",
+        "category": "main_building",
+        "caption": "Centennial Hall at SMU",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Centennial_Hall_at_SMU.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Centennial_Hall_at_SMU.JPG",
+        "attribution": "Wikimedia Commons (Centennial Hall at SMU.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sookmyung-womens-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Inside of Sookmyung Women's University Museum",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/32/Inside_of_Sookmyung_Women%27s_University_Museum.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Inside_of_Sookmyung_Women%27s_University_Museum.JPG",
+        "attribution": "Wikimedia Commons (Inside of Sookmyung Women's University Museum.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sookmyung-womens-university-campus-3.jpg",
+        "category": "library",
+        "caption": "Main Library at SMU",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/35/Main_Library_at_SMU.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Main_Library_at_SMU.JPG",
+        "attribution": "Wikimedia Commons (Main Library at SMU.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sookmyung-womens-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "Moonshin Museum Galaxy Gallery",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Moonshin_Museum_Galaxy_Gallery.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Moonshin_Museum_Galaxy_Gallery.JPG",
+        "attribution": "Wikimedia Commons (Moonshin Museum Galaxy Gallery.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sookmyung-womens-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "Sookmyung04",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Sookmyung04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sookmyung04.jpg",
+        "attribution": "Wikimedia Commons (Sookmyung04.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "sungshin-womens-university": {
+    "id": "sungshin-womens-university",
+    "name": "Sungshin Women's University",
+    "logo": {
+      "localPath": "/assets/university-logos/sungshin-womens-university.jpg",
+      "sourceUrl": "https://www.sungshin.ac.kr/sites/main_kor/images/common/logo.jpg",
+      "sourcePageUrl": "https://www.sungshin.ac.kr/sites/main_kor/main.jsp",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/sungshin-womens-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Sungshin1",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/41/Sungshin1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sungshin1.jpg",
+        "attribution": "Wikimedia Commons (Sungshin1.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sungshin-womens-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Sungshin image 03",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/45/Sungshin_image_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sungshin_image_03.jpg",
+        "attribution": "Wikimedia Commons (Sungshin image 03.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sungshin-womens-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "Sungshin image 05",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Sungshin_image_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Sungshin_image_05.jpg",
+        "attribution": "Wikimedia Commons (Sungshin image 05.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sungshin-womens-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "돈암수정캠퍼스 전경",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/%EB%8F%88%EC%95%94%EC%88%98%EC%A0%95%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%A0%84%EA%B2%BD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%88%EC%95%94%EC%88%98%EC%A0%95%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%A0%84%EA%B2%BD.jpg",
+        "attribution": "Wikimedia Commons (돈암수정캠퍼스 전경.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/sungshin-womens-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "미아 운정그린캠퍼스 전경",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4c/%EB%AF%B8%EC%95%84_%EC%9A%B4%EC%A0%95%EA%B7%B8%EB%A6%B0%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%A0%84%EA%B2%BD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%AF%B8%EC%95%84_%EC%9A%B4%EC%A0%95%EA%B7%B8%EB%A6%B0%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%A0%84%EA%B2%BD.jpg",
+        "attribution": "Wikimedia Commons (미아 운정그린캠퍼스 전경.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "tongmyong-university": {
+    "id": "tongmyong-university",
+    "name": "Tongmyong University",
+    "logo": {
+      "localPath": "/assets/university-logos/tongmyong-university.gif",
+      "sourceUrl": "https://www.tu.ac.kr/_res/tongmyong/tuhome/img/common/img-hbot-logo.gif",
+      "sourcePageUrl": "https://www.tu.ac.kr/tuhome/index.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "woosong-university": {
+    "id": "woosong-university",
+    "name": "Woosong University",
+    "logo": {
+      "localPath": "/assets/university-logos/woosong-university.png",
+      "sourceUrl": "https://english.wsu.ac.kr/site/main_eng/images/logo.png",
+      "sourcePageUrl": "https://english.wsu.ac.kr/main/index.jsp",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/woosong-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Woosong University West Campus 20190608 A01",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Woosong_University_West_Campus_20190608_A01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Woosong_University_West_Campus_20190608_A01.jpg",
+        "attribution": "Wikimedia Commons (Woosong University West Campus 20190608 A01.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/woosong-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Woosong University East Campus 20190608 A01",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Woosong_University_East_Campus_20190608_A01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Woosong_University_East_Campus_20190608_A01.jpg",
+        "attribution": "Wikimedia Commons (Woosong University East Campus 20190608 A01.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/woosong-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "Woosong University East Campus 20190608 A02",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Woosong_University_East_Campus_20190608_A02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Woosong_University_East_Campus_20190608_A02.jpg",
+        "attribution": "Wikimedia Commons (Woosong University East Campus 20190608 A02.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/woosong-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "Woosong University West Campus 20190608 A02",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Woosong_University_West_Campus_20190608_A02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Woosong_University_West_Campus_20190608_A02.jpg",
+        "attribution": "Wikimedia Commons (Woosong University West Campus 20190608 A02.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/woosong-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "Woosong University West Campus 20190608 A04",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Woosong_University_West_Campus_20190608_A04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Woosong_University_West_Campus_20190608_A04.jpg",
+        "attribution": "Wikimedia Commons (Woosong University West Campus 20190608 A04.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "yewon-arts-university": {
+    "id": "yewon-arts-university",
+    "name": "Yewon Arts University",
+    "logo": {
+      "localPath": "/assets/university-logos/yewon-arts-university.png",
+      "sourceUrl": "https://www.yewon.ac.kr/common/img/intro/intro_logo.png",
+      "sourcePageUrl": "https://www.yewon.ac.kr/",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "youngsan-university": {
+    "id": "youngsan-university",
+    "name": "Youngsan University",
+    "logo": {
+      "localPath": "/assets/university-logos/youngsan-university.png",
+      "sourceUrl": "https://www.ysu.ac.kr/resources/_Img/Common/logo.png",
+      "sourcePageUrl": "https://www.ysu.ac.kr/kor/Main.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/youngsan-university-official-1.png",
+        "category": "banner",
+        "caption": "Youngsan University Official Portal Visual",
+        "sourceUrl": "https://ysu.ac.kr/resources/_Img/og_thum.png",
+        "sourcePageUrl": "https://www.ysu.ac.kr/kor/Main.do",
+        "attribution": "Youngsan University Official Website (https://www.ysu.ac.kr/kor/Main.do)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "assist-university": {
+    "id": "assist-university",
+    "name": "aSSIST University",
+    "logo": {
+      "localPath": "/assets/university-logos/assist-university.png",
+      "sourceUrl": "https://intro.assist.ac.kr/image/logo/snslogo_20240117031125.png",
+      "sourcePageUrl": "https://intro.assist.ac.kr/",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "busan-institute-of-science-and-technology": {
+    "id": "busan-institute-of-science-and-technology",
+    "name": "Busan Institute of Science and Technology",
+    "logo": null,
+    "photos": []
+  },
+  "chungbuk-national-university": {
+    "id": "chungbuk-national-university",
+    "name": "Chungbuk National University",
+    "logo": {
+      "localPath": "/assets/university-logos/chungbuk-national-university.png",
+      "sourceUrl": "https://www.chungbuk.ac.kr/common/images/layout/logo.png",
+      "sourcePageUrl": "https://www.chungbuk.ac.kr/site/www/main.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/chungbuk-national-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Chungbuk National University Hospital",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Chungbuk_National_University_Hospital.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Chungbuk_National_University_Hospital.JPG",
+        "attribution": "Wikimedia Commons (Chungbuk National University Hospital.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/chungbuk-national-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "충북대학교 정문",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4e/%EC%B6%A9%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%A0%95%EB%AC%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%B6%A9%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%A0%95%EB%AC%B8.jpg",
+        "attribution": "Wikimedia Commons (충북대학교 정문.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/chungbuk-national-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "ChungBuk National Univ",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/ChungBuk_National_Univ.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:ChungBuk_National_Univ.jpg",
+        "attribution": "Wikimedia Commons (ChungBuk National Univ.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/chungbuk-national-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "충북대 기숙사 태양열 집열기",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e8/%EC%B6%A9%EB%B6%81%EB%8C%80_%EA%B8%B0%EC%88%99%EC%82%AC_%ED%83%9C%EC%96%91%EC%97%B4_%EC%A7%91%EC%97%B4%EA%B8%B0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%B6%A9%EB%B6%81%EB%8C%80_%EA%B8%B0%EC%88%99%EC%82%AC_%ED%83%9C%EC%96%91%EC%97%B4_%EC%A7%91%EC%97%B4%EA%B8%B0.jpg",
+        "attribution": "Wikimedia Commons (충북대 기숙사 태양열 집열기.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/chungbuk-national-university-campus-5.jpg",
+        "category": "main_building",
+        "caption": "강구조-공학관-기둥1-20170907 114615",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/%EA%B0%95%EA%B5%AC%EC%A1%B0-%EA%B3%B5%ED%95%99%EA%B4%80-%EA%B8%B0%EB%91%A51-20170907_114615.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EA%B0%95%EA%B5%AC%EC%A1%B0-%EA%B3%B5%ED%95%99%EA%B4%80-%EA%B8%B0%EB%91%A51-20170907_114615.jpg",
+        "attribution": "Wikimedia Commons (강구조-공학관-기둥1-20170907 114615.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "dong-a-university": {
+    "id": "dong-a-university",
+    "name": "Dong-A University",
+    "logo": {
+      "localPath": "/assets/university-logos/dong-a-university.png",
+      "sourceUrl": "https://english.donga.ac.kr",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/dong-a-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "Dong-A Univ Bumin Campus",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Dong-A_Univ_Bumin_Campus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Dong-A_Univ_Bumin_Campus.JPG",
+        "attribution": "Wikimedia Commons (Dong-A Univ Bumin Campus.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/dong-a-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Dong-A Univ Bus",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Dong-A_Univ_Bus.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Dong-A_Univ_Bus.JPG",
+        "attribution": "Wikimedia Commons (Dong-A Univ Bus.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "dong-eui-institute-of-technology": {
+    "id": "dong-eui-institute-of-technology",
+    "name": "Dong-Eui Institute of Technology",
+    "logo": {
+      "localPath": "/assets/university-logos/dong-eui-institute-of-technology.png",
+      "sourceUrl": "https://www.dit.ac.kr/kr/_Img/Intro/2024/logo_h.png",
+      "sourcePageUrl": "https://www.dit.ac.kr/kr/",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "dong-eui-university": {
+    "id": "dong-eui-university",
+    "name": "Dong-Eui University",
+    "logo": {
+      "localPath": "/assets/university-logos/dong-eui-university.jpg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/ko/0/06/Dong-Eui_University_logotype.jpg?utm_source=ko.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "sourcePageUrl": "https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC:Dong-Eui_University_logotype.jpg",
+      "sourceType": "Official Institutional Emblem Archive (Wikimedia)",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/dong-eui-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "동의대 봄전경",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/77/%EB%8F%99%EC%9D%98%EB%8C%80_%EB%B4%84%EC%A0%84%EA%B2%BD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%99%EC%9D%98%EB%8C%80_%EB%B4%84%EC%A0%84%EA%B2%BD.jpg",
+        "attribution": "Wikimedia Commons (동의대 봄전경.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/dong-eui-university-campus-2.jpg",
+        "category": "library",
+        "caption": "동의대도서관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/%EB%8F%99%EC%9D%98%EB%8C%80%EB%8F%84%EC%84%9C%EA%B4%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%99%EC%9D%98%EB%8C%80%EB%8F%84%EC%84%9C%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (동의대도서관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/dong-eui-university-campus-3.jpg",
+        "category": "main_building",
+        "caption": "동의대 지천관 1층 내부",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/%EB%8F%99%EC%9D%98%EB%8C%80_%EC%A7%80%EC%B2%9C%EA%B4%80_1%EC%B8%B5_%EB%82%B4%EB%B6%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%99%EC%9D%98%EB%8C%80_%EC%A7%80%EC%B2%9C%EA%B4%80_1%EC%B8%B5_%EB%82%B4%EB%B6%80.jpg",
+        "attribution": "Wikimedia Commons (동의대 지천관 1층 내부.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/dong-eui-university-campus-4.jpg",
+        "category": "main_building",
+        "caption": "동의대학교 본관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/%EB%8F%99%EC%9D%98%EB%8C%80%ED%95%99%EA%B5%90_%EB%B3%B8%EA%B4%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%99%EC%9D%98%EB%8C%80%ED%95%99%EA%B5%90_%EB%B3%B8%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (동의대학교 본관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/dong-eui-university-campus-5.jpg",
+        "category": "main_building",
+        "caption": "동의대학교 여학생커리어개발관, 효민여학생생활관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5d/%EB%8F%99%EC%9D%98%EB%8C%80%ED%95%99%EA%B5%90_%EC%97%AC%ED%95%99%EC%83%9D%EC%BB%A4%EB%A6%AC%EC%96%B4%EA%B0%9C%EB%B0%9C%EA%B4%80%2C_%ED%9A%A8%EB%AF%BC%EC%97%AC%ED%95%99%EC%83%9D%EC%83%9D%ED%99%9C%EA%B4%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EB%8F%99%EC%9D%98%EB%8C%80%ED%95%99%EA%B5%90_%EC%97%AC%ED%95%99%EC%83%9D%EC%BB%A4%EB%A6%AC%EC%96%B4%EA%B0%9C%EB%B0%9C%EA%B4%80,_%ED%9A%A8%EB%AF%BC%EC%97%AC%ED%95%99%EC%83%9D%EC%83%9D%ED%99%9C%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (동의대학교 여학생커리어개발관, 효민여학생생활관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "dongshin-university": {
+    "id": "dongshin-university",
+    "name": "Dongshin University",
+    "logo": {
+      "localPath": "/assets/university-logos/dongshin-university.png",
+      "sourceUrl": "https://www.dsu.ac.kr/kr/_Img/logo.png",
+      "sourcePageUrl": "https://www.dsu.ac.kr/kr/",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "gachon-university": {
+    "id": "gachon-university",
+    "name": "Gachon University",
+    "logo": {
+      "localPath": "/assets/university-logos/gachon-university.jpg",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Gachonlogo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Gachonlogo.jpg",
+      "sourceType": "Official Institutional Emblem Archive (Wikimedia)",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/gachon-university-official-1.jpg",
+        "category": "banner",
+        "caption": "Gachon University Official Portal Visual",
+        "sourceUrl": "https://www.gachon.ac.kr/Web-home/_UI/images/gachon.jpg",
+        "sourcePageUrl": "https://www.gachon.ac.kr/",
+        "attribution": "Gachon University Official Website (https://www.gachon.ac.kr/)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/gachon-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Gachon",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Gachon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Gachon.jpg",
+        "attribution": "Wikimedia Commons (Gachon.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/gachon-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "Gachong",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Gachong.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Gachong.jpg",
+        "attribution": "Wikimedia Commons (Gachong.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/gachon-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "Gachonm",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Gachonm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Gachonm.jpg",
+        "attribution": "Wikimedia Commons (Gachonm.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/gachon-university-campus-5.jpg",
+        "category": "main_building",
+        "caption": "가천대학교 메디컬캠퍼스 외관 2024",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bb/%EA%B0%80%EC%B2%9C%EB%8C%80%ED%95%99%EA%B5%90_%EB%A9%94%EB%94%94%EC%BB%AC%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%99%B8%EA%B4%80_2024.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EA%B0%80%EC%B2%9C%EB%8C%80%ED%95%99%EA%B5%90_%EB%A9%94%EB%94%94%EC%BB%AC%EC%BA%A0%ED%8D%BC%EC%8A%A4_%EC%99%B8%EA%B4%80_2024.jpg",
+        "attribution": "Wikimedia Commons (가천대학교 메디컬캠퍼스 외관 2024.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "hanseo-university": {
+    "id": "hanseo-university",
+    "name": "Hanseo University",
+    "logo": {
+      "localPath": "/assets/university-logos/hanseo-university.png",
+      "sourceUrl": "https://www.hanseo.ac.kr/images/template/00004/common/logo.png",
+      "sourcePageUrl": "https://www.hanseo.ac.kr/main.do?s=hs",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": []
+  },
+  "hanyang-university": {
+    "id": "hanyang-university",
+    "name": "Hanyang University",
+    "logo": null,
+    "photos": [
+      {
+        "localPath": "/assets/university-media/hanyang-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "70day miracle HYU",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cb/70day_miracle_HYU.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:70day_miracle_HYU.jpg",
+        "attribution": "Wikimedia Commons (70day miracle HYU.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/hanyang-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Campaign for GSA election HYU",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Campaign_for_GSA_election_HYU.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Campaign_for_GSA_election_HYU.JPG",
+        "attribution": "Wikimedia Commons (Campaign for GSA election HYU.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/hanyang-university-campus-3.jpg",
+        "category": "campus",
+        "caption": "Classroom in FTC",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/Classroom_in_FTC.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Classroom_in_FTC.JPG",
+        "attribution": "Wikimedia Commons (Classroom in FTC.JPG)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/hanyang-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "HYU 138stair",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/HYU_138stair.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:HYU_138stair.jpg",
+        "attribution": "Wikimedia Commons (HYU 138stair.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/hanyang-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "HYU capstone design fair",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/HYU_capstone_design_fair.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:HYU_capstone_design_fair.jpg",
+        "attribution": "Wikimedia Commons (HYU capstone design fair.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "inje-university": {
+    "id": "inje-university",
+    "name": "Inje University",
+    "logo": {
+      "localPath": "/assets/university-logos/inje-university.png",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/%EC%9D%B8%EC%A0%9C%EB%8C%80%ED%95%99%EA%B5%90_%EB%A1%9C%EA%B3%A0.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%9D%B8%EC%A0%9C%EB%8C%80%ED%95%99%EA%B5%90_%EB%A1%9C%EA%B3%A0.png",
+      "sourceType": "Official Institutional Emblem Archive (Wikimedia)",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/inje-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "인제대 전경1",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/%EC%9D%B8%EC%A0%9C%EB%8C%80_%EC%A0%84%EA%B2%BD1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%9D%B8%EC%A0%9C%EB%8C%80_%EC%A0%84%EA%B2%BD1.jpg",
+        "attribution": "Wikimedia Commons (인제대 전경1.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "jeonbuk-national-university": {
+    "id": "jeonbuk-national-university",
+    "name": "Jeonbuk National University",
+    "logo": {
+      "localPath": "/assets/university-logos/jeonbuk-national-university.svg",
+      "sourceUrl": "https://www.jbnu.ac.kr",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/jeonbuk-national-university-campus-1.jpg",
+        "category": "campus",
+        "caption": "JBNU 신정문",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2d/JBNU_%EC%8B%A0%EC%A0%95%EB%AC%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:JBNU_%EC%8B%A0%EC%A0%95%EB%AC%B8.jpg",
+        "attribution": "Wikimedia Commons (JBNU 신정문.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/jeonbuk-national-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "전북대학교 배롱나무연못",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EB%B0%B0%EB%A1%B1%EB%82%98%EB%AC%B4%EC%97%B0%EB%AA%BB.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EB%B0%B0%EB%A1%B1%EB%82%98%EB%AC%B4%EC%97%B0%EB%AA%BB.jpg",
+        "attribution": "Wikimedia Commons (전북대학교 배롱나무연못.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/jeonbuk-national-university-campus-3.jpg",
+        "category": "main_building",
+        "caption": "전북대학교 생활관건물",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%83%9D%ED%99%9C%EA%B4%80%EA%B1%B4%EB%AC%BC.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%83%9D%ED%99%9C%EA%B4%80%EA%B1%B4%EB%AC%BC.jpg",
+        "attribution": "Wikimedia Commons (전북대학교 생활관건물.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/jeonbuk-national-university-campus-4.jpg",
+        "category": "main_building",
+        "caption": "전북대학교 자연사박물관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/59/%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%9E%90%EC%97%B0%EC%82%AC%EB%B0%95%EB%AC%BC%EA%B4%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EC%A0%84%EB%B6%81%EB%8C%80%ED%95%99%EA%B5%90_%EC%9E%90%EC%97%B0%EC%82%AC%EB%B0%95%EB%AC%BC%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (전북대학교 자연사박물관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/jeonbuk-national-university-campus-5.jpg",
+        "category": "campus",
+        "caption": "Jeonbuk national university 20230408 010",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Jeonbuk_national_university_20230408_010.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Jeonbuk_national_university_20230408_010.jpg",
+        "attribution": "Wikimedia Commons (Jeonbuk national university 20230408 010.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "kangwon-national-university": {
+    "id": "kangwon-national-university",
+    "name": "Kangwon National University",
+    "logo": {
+      "localPath": "/assets/university-logos/kangwon-national-university.webp",
+      "sourceUrl": "https://www.kangwon.ac.kr/assets/ko/images/logos/logo-color.webp",
+      "sourcePageUrl": "https://www.kangwon.ac.kr/ko/index.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/kangwon-national-university-official-1.png",
+        "category": "banner",
+        "caption": "Kangwon National University Official Portal Visual",
+        "sourceUrl": "https://www.kangwon.ac.kr/assets/ko/images/og-image.png",
+        "sourcePageUrl": "https://www.kangwon.ac.kr/ko/index.do",
+        "attribution": "Kangwon National University Official Website (https://www.kangwon.ac.kr/ko/index.do)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kangwon-national-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "KangwonUniv Mirae",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1b/KangwonUniv_Mirae.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:KangwonUniv_Mirae.jpg",
+        "attribution": "Wikimedia Commons (KangwonUniv Mirae.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kangwon-national-university-campus-3.jpg",
+        "category": "main_building",
+        "caption": "강원대학교 60주년 기념관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b8/%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_60%EC%A3%BC%EB%85%84_%EA%B8%B0%EB%85%90%EA%B4%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_60%EC%A3%BC%EB%85%84_%EA%B8%B0%EB%85%90%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (강원대학교 60주년 기념관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kangwon-national-university-campus-4.jpg",
+        "category": "campus",
+        "caption": "강원대학교 대학본부",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/ko/2/26/%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_%EB%8C%80%ED%95%99%EB%B3%B8%EB%B6%80.jpg?utm_source=ko.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC:%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_%EB%8C%80%ED%95%99%EB%B3%B8%EB%B6%80.jpg",
+        "attribution": "Wikimedia Commons (강원대학교 대학본부.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/kangwon-national-university-campus-5.jpg",
+        "category": "main_building",
+        "caption": "강원대학교 실사구시관",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/ko/5/54/%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_%EC%8B%A4%EC%82%AC%EA%B5%AC%EC%8B%9C%EA%B4%80.jpg?utm_source=ko.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC:%EA%B0%95%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90_%EC%8B%A4%EC%82%AC%EA%B5%AC%EC%8B%9C%EA%B4%80.jpg",
+        "attribution": "Wikimedia Commons (강원대학교 실사구시관.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  },
+  "konyang-university": {
+    "id": "konyang-university",
+    "name": "Konyang University",
+    "logo": {
+      "localPath": "/assets/university-logos/konyang-university.png",
+      "sourceUrl": "https://www.konyang.ac.kr/images/kor/common/mobile_logo.png",
+      "sourcePageUrl": "https://www.konyang.ac.kr/kor.do",
+      "sourceType": "Official University Website",
+      "retrievedAt": "2026-11-12",
+      "verified": true
+    },
+    "photos": [
+      {
+        "localPath": "/assets/university-media/konyang-university-campus-1.jpg",
+        "category": "main_building",
+        "caption": "KYU -GCC Bdg",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/KYU_-GCC_Bdg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:KYU_-GCC_Bdg.jpg",
+        "attribution": "Wikimedia Commons (KYU -GCC Bdg.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      },
+      {
+        "localPath": "/assets/university-media/konyang-university-campus-2.jpg",
+        "category": "campus",
+        "caption": "Konyang University Hospital",
+        "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Konyang_University_Hospital.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Konyang_University_Hospital.jpg",
+        "attribution": "Wikimedia Commons (Konyang University Hospital.jpg)",
+        "retrievedAt": "2026-11-12",
+        "verified": true
+      }
+    ]
+  }
+}

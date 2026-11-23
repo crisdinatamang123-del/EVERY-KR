@@ -1,0 +1,39 @@
+# EVERYKR — Phase 13B Safe Cloud Run Docker Build Context Exclusions
+# Excludes only non-runtime build artifacts, local caches, offline backups,
+# AI Studio scratch artifacts, and offline verification scripts.
+# All source files (src/, server.ts, index.html, configs) and public static
+# assets (public/) remain included so `npm install` and `npm run build`
+# regenerate `dist/` cleanly inside the container build.
+
+# Dependencies (installed cleanly during container build via npm install)
+node_modules
+npm-debug.log*
+*.log
+
+# Local pre-built output (regenerated during container build via `npm run build`)
+dist
+build
+coverage
+
+# Offline historical backups & snapshots (preserved in workspace; not needed in container)
+.everykr-backup-phase1
+.everykr-backup-*
+backups
+
+# AI Studio planning/artifact scratch storage & temporary verification files
+.aistudio
+.tmp_verify_phase11.tsx
+.tmp_verify_*
+
+# Offline maintenance & verification scripts (unreferenced by build and runtime)
+scripts
+
+# Local runtime state stores & local environment secrets (keep .env.example)
+.everykr-*.json
+.env
+.env.*
+!.env.example
+
+# OS & VCS metadata
+.git
+.DS_Store
